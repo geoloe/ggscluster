@@ -1,0 +1,43 @@
+cluster.name: opensearch-cluster
+node.name: opensearch-node1
+network.host: 0.0.0.0
+discovery.seed_hosts: ["opensearch-node1", "opensearch-node2"]
+cluster.initial_cluster_manager_nodes: ["opensearch-node1", "opensearch-node2"]
+bootstrap.memory_lock: true
+plugins.security.disabled: false
+
+# Enable TLS/SSL for transport and HTTP layers
+plugins.security.ssl.transport.pemcert_filepath: /usr/share/opensearch/config/node1.pem
+plugins.security.ssl.transport.pemkey_filepath: /usr/share/opensearch/config/node1-key.pem
+plugins.security.ssl.transport.pemtrustedcas_filepath: /usr/share/opensearch/config/root-ca.pem
+plugins.security.ssl.transport.enforce_hostname_verification: false
+
+plugins.security.ssl.http.enabled: true
+plugins.security.ssl.http.pemcert_filepath: /usr/share/opensearch/config/node1.pem
+plugins.security.ssl.http.pemkey_filepath: /usr/share/opensearch/config/node1-key.pem
+plugins.security.ssl.http.pemtrustedcas_filepath: /usr/share/opensearch/config/root-ca.pem
+
+
+# Whitelisted DNs for transport communication
+plugins.security.nodes_dn:
+  - 'CN=node1'
+  - 'CN=node2'
+
+# Admin DN for security privileges
+plugins.security.authcz.admin_dn:
+  - 'CN=admin'
+
+#plugins.security.ssl.http.enabled_ciphers:
+#  - "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+#  - "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
+#plugins.security.ssl.http.enabled_protocols:
+#  - "TLSv1.2"
+#  - "TLSv1.3"
+
+# Additional security settings
+plugins.security.allow_default_init_securityindex: true
+plugins.security.enable_snapshot_restore_privilege: true
+plugins.security.check_snapshot_restore_write_privileges: true
+plugins.security.restapi.roles_enabled: ["all_access", "security_rest_api_access"]
+plugins.security.audit.type: internal_opensearch
+cluster.routing.allocation.disk.threshold_enabled: false

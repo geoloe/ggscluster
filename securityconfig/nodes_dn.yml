@@ -1,0 +1,8 @@
+_meta:
+  type: "nodesdn"
+  config_version: 2
+
+# Define nodesdn mapping for your specific cluster
+opensearch-cluster:
+  nodes_dn:
+    - CN=*.test.com  # Replace 'yourdomain.com' with your actual domain
