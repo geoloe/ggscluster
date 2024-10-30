@@ -28,18 +28,3 @@ opensearch_security.multitenancy.enabled: true
 opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
 opensearch_security.readonly_mode.roles: ["kibana_read_only"]
 opensearch_security.cookie.secure: true
-
-## Branding
-### Branding ###
-#opensearchDashboards.branding:
-#  logo:
-#    defaultUrl: "{{ images_base_path }}/T_security_rgb_p.svg"
-#    darkModeUrl: "{{ images_base_path }}/T_security_rgb_p.svg"
-#  mark:
-#    defaultUrl: "{{ images_base_path }}/T_logo_rgb_p.svg"
-#    darkModeUrl: "{{ images_base_path }}/T_logo_rgb_p.svg"
-#  loadingLogo:
-#    defaultUrl: "{{ images_base_path }}/T_security_rgb_pk.svg"
-#    darkModeUrl: "{{ images_base_path }}/T_security_rgb_p.svg"
-#  faviconUrl: "{{ images_base_path }}/T_logo_rgb_p.svg"
-#  applicationTitle: "NEA Platform"
