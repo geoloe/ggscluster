@@ -41,6 +41,6 @@ opensearchDashboards.branding:
   loadingLogo:
     defaultUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
     darkModeUrl: "https://localhost:5601/ui/assets/GGS-light.png"
-  faviconUrl: "https://localhost:5601/ui/assets/GGS-logo"
+  faviconUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
   applicationTitle: "GGs Cluster"
 ### CHANGE TO YOUR NEEDS ###
