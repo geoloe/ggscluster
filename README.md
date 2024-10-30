@@ -1,10 +1,8 @@
-Here’s a README.md file template for your project:
-
-markdown
-
 # GGSCluster - Dockerized OpenSearch, Nginx, and Pi-hole
 
 GGSCluster is a Docker Compose-based project to deploy a secure, self-hosted OpenSearch cluster with OpenSearch Dashboards, Nginx as a reverse proxy, and Pi-hole as a DNS resolver. This project enables secure HTTPS access to OpenSearch services and custom DNS resolution within a LAN environment.
+
+It can be customized to use another domain.
 
 ## Features
 
@@ -26,87 +24,98 @@ GGSCluster is a Docker Compose-based project to deploy a secure, self-hosted Ope
 
 - **Docker** and **Docker Compose** installed on your system.
 - **OpenSSL** for generating certificates.
-- A **Linux environment** (instructions may vary for other OS).
+- **Linux environment** (instructions may vary for other OS).
 
 ## Installation
 
 1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/ggscluster.git
-   cd ggscluster
+```bash
+git clone https://github.com/yourusername/ggscluster.git
+cd ggscluster
+```
 
-    Generate SSL certificates for OpenSearch, Nginx, and OpenSearch Dashboards:
+Generate SSL certificates for OpenSearch, Nginx, and OpenSearch Dashboards:
 
-    bash
+```bash
+./certificates/generate_certificates.sh
+```
 
-./generate_certificates.sh
+
 
 This script generates a root CA, server certificates, and keys for each service. Customize the SERVICES variable within the script to add or modify service names and SANs.
 
 Trust the Root CA:
 
-    Add the generated root CA certificate (root-ca.pem) to your system's trusted certificates.
-    For Ubuntu:
+Add the generated root CA certificate (root-ca.pem) to your system's trusted certificates.
+For Ubuntu:
 
-    bash
+```bash
+sudo cp /path/to/root-ca.pem /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
 
-        sudo cp /path/to/root-ca.pem /usr/local/share/ca-certificates/
-        sudo update-ca-certificates
 
-Configuration
 
-    Docker Compose File:
-        Customize docker-compose.yml to specify service configurations, volume mappings, and ports.
-        OpenSearch and Dashboards use port 9200 and 5601 respectively.
+## Configuration
 
-    Nginx Configuration:
-        Update nginx.conf to set up the reverse proxy for OpenSearch (https://ggscluster.com:9200) and Dashboards (https://ggscluster.com:5601).
-        Ensure the SSL paths match the generated certificates:
+Docker Compose File:
 
-        nginx
+    Customize docker-compose.yml to specify service configurations, volume mappings, and ports.
 
-        ssl_certificate /etc/nginx/certs/nginx.pem;
-        ssl_certificate_key /etc/nginx/certs/nginx-key.pem;
-        ssl_trusted_certificate /etc/nginx/certs/root-ca.pem;
+    OpenSearch and Dashboards use port 9200 and 5601 respectively.
 
-    Pi-hole:
-        Configure Pi-hole to resolve ggscluster.com to your LAN IP (e.g., 192.168.2.234) by adding a custom DNS entry in Pi-hole’s GUI or setting a static DNS entry in docker-compose.yml.
+Nginx Configuration:
 
-Usage
+    Update nginx.conf to set up the reverse proxy for OpenSearch (https://ggscluster.com:9200) and Dashboards (https://ggscluster.com:5601).
 
-    Start the Cluster:
+    Ensure the SSL paths match the generated certificates:
 
-    bash
+    nginx
 
-    docker-compose up -d
+    ssl_certificate /etc/nginx/certs/nginx.pem;
+    ssl_certificate_key /etc/nginx/certs/nginx-key.pem;
+    ssl_trusted_certificate /etc/nginx/certs/root-ca.pem;
 
-    Access OpenSearch Dashboards:
-        Go to https://ggscluster.com:5601/app/home#/.
+Pi-hole:
 
-    Pi-hole Admin Interface:
-        Access the Pi-hole GUI at https://ggscluster.com/pihole/admin.
+    Configure Pi-hole to resolve ggscluster.com to your LAN IP (e.g., 192.168.2.234) by adding a custom DNS entry in Pi-hole’s GUI or setting a static DNS entry in docker-compose.yml.
 
-    OpenSearch API:
-        Interact with the OpenSearch API at https://ggscluster.com:9200.
+## Usage
 
-Security
+Start the Cluster:
+
+```bash
+docker-compose up -d
+```
+
+Access OpenSearch Dashboards:
+
+    Go to https://ggscluster.com:5601/app/home#/.
+
+Pi-hole Admin Interface:
+
+    Access the Pi-hole GUI at https://ggscluster.com/pihole/admin.
+
+OpenSearch API:
+
+    Interact with the OpenSearch API at https://ggscluster.com:9200.
+
+## Security
 
 This setup uses self-signed certificates. To avoid browser security warnings, add the generated root CA to your local trusted certificates. Additionally:
 
-    Nginx is configured to use TLSv1.2 and TLSv1.3 protocols with strong cipher suites.
-    OpenSearch Dashboards and API access are protected by HTTPS.
+Nginx is configured to use TLSv1.2 and TLSv1.3 protocols with strong cipher suites.
 
-Troubleshooting
+OpenSearch Dashboards and API access are protected by HTTPS.
 
-    Bad Gateway in Nginx: Ensure the proxy_pass URL in nginx.conf correctly references the Docker service names (opensearch-node1 and opensearch-dashboards).
-    Certificate Not Trusted: Verify the root CA is added to your system's trusted certificates and restart your browser.
-    Custom DNS Not Resolving: Verify Pi-hole is set as the DNS resolver on your router or client devices.
+## Troubleshooting
 
-License
+Bad Gateway in Nginx: Ensure the proxy_pass URL in nginx.conf correctly references the Docker service names (opensearch-node1 and opensearch-dashboards).
+
+Certificate Not Trusted: Verify the root CA is added to your system's trusted certificates and restart your browser.
+
+Custom DNS Not Resolving: Verify Pi-hole is set as the DNS resolver on your router or client devices.
+
+## License
 
 This project is licensed under the MIT License.
-
-typescript
-
-
-This `README.md` covers the setup, usage, and basic troubleshooting of your Docker-based OpenSearch project. You can customize sections as needed to fit any specific configuration details.
