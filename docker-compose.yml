@@ -75,9 +75,14 @@ services:
     volumes:
       - dashboards-data:/usr/share/opensearch-dashboards/data
       - ./config/dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
-      - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch/config/opensearch-dashboards-key.pem
-      - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch/config/opensearch-dashboards.pem
-      - ./certificates/root-ca.pem:/usr/share/opensearch/config/root-ca.pem
+      - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
+      - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
+      - ./certificates/root-ca.pem:/usr/share/opensearch-dashboards/config/root-ca.pem
+      ### CHANGE TO YOUR NEEDS ###
+      - ./images/GGS.png:/usr/share/opensearch-dashboards/assets/GGS.png
+      - ./images/GGS-logo.png:/usr/share/opensearch-dashboards/assets/GGS-logo.png
+      - ./images/GGS-light.png:/usr/share/opensearch-dashboards/assets/GGS-light.png
+      - ./images/GGS-logo-light.png:/usr/share/opensearch-dashboards/assets/GGS-logo-light.png
 
   nginx:
     image: nginx:latest

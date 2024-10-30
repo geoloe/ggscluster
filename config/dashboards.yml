@@ -12,11 +12,11 @@ opensearch.password: "KibanaSecurePass456!"
 
 # Enable SSL for OpenSearch Dashboards.
 server.ssl.enabled: true
-server.ssl.certificate: /usr/share/opensearch/config/opensearch-dashboards.pem # Path to your server certificate
-server.ssl.key: /usr/share/opensearch/config/opensearch-dashboards-key.pem  # Path to your server key
+server.ssl.certificate: /usr/share/opensearch-dashboards/config/opensearch-dashboards.pem # Path to your server certificate
+server.ssl.key: /usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem  # Path to your server key
 
 # Optional: Specify the CA certificate for the OpenSearch server.
-opensearch.ssl.certificateAuthorities: ["/usr/share/opensearch/config/root-ca.pem"]
+opensearch.ssl.certificateAuthorities: ["/usr/share/opensearch-dashboards/config/root-ca.pem"]
 
 # Optional: Set verification mode for SSL
 opensearch.ssl.verificationMode: certificate  # Full verification (can be changed to 'certificate' or 'none')
@@ -28,3 +28,19 @@ opensearch_security.multitenancy.enabled: true
 opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
 opensearch_security.readonly_mode.roles: ["kibana_read_only"]
 opensearch_security.cookie.secure: true
+
+# Branding Configuration
+### CHANGE TO YOUR NEEDS ###
+opensearchDashboards.branding:
+  logo:
+    defaultUrl: "https://localhost:5601/ui/assets/GGS.png"
+    darkModeUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
+  mark:
+    defaultUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
+    darkModeUrl: "https://localhost:5601/ui/assets/GGS-logo-light.png"
+  loadingLogo:
+    defaultUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
+    darkModeUrl: "https://localhost:5601/ui/assets/GGS-light.png"
+  faviconUrl: "https://localhost:5601/ui/assets/GGS-logo"
+  applicationTitle: "GGs Cluster"
+### CHANGE TO YOUR NEEDS ###

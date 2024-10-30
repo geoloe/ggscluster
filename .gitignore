@@ -2,3 +2,4 @@ certificates/*.pem
 certificates/*.srl
 .env
 pihole/
+images/
