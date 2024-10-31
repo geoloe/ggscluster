@@ -123,7 +123,6 @@ volumes:
   pihole_data:
   dnsmasq_data:
   dashboards-data:
-
+  
 networks:
   opensearch-net:
-    driver: bridge  # Ensure that the network is defined with a driver

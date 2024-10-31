@@ -51,6 +51,7 @@ SERVICES["node1"]="DNS:node1,DNS:opensearch-node1,DNS:ggscluster.com,DNS:localho
 SERVICES["node2"]="DNS:node2,DNS:opensearch-node2,DNS:ggscluster.com,DNS:localhost"
 SERVICES["admin"]="DNS:admin,DNS:ggscluster.com,DNS:localhost"
 SERVICES["nginx"]="DNS:nginx,DNS:ggscluster.com,DNS:localhost"
+SERVICES["ls"]="DNS:ls,DNS:ggscluster.com,DNS:localhost"
 SERVICES["opensearch-dashboards"]="DNS:opensearch-dashboards,DNS:ggscluster.com,DNS:localhost"
 
 # Generate certificates for each service
