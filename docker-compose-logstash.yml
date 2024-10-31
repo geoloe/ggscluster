@@ -22,4 +22,4 @@ services:
 networks:
   opensearch-net:
     external: true  # Change this to an external network
-    name: ggscluster_opensearch-net
+    name: opensearch-net
