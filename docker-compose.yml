@@ -68,12 +68,13 @@ services:
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
+    expose:
+      - "5601" # Expose port 5601 for web access to OpenSearch Dashboards
     environment:
       - 'OPENSEARCH_HOSTS=["https://opensearch-node1:9200","https://opensearch-node2:9200"]'
     networks:
       - opensearch-net
     volumes:
-      - dashboards-data:/usr/share/opensearch-dashboards/data
       - ./config/dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
       - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
       - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
@@ -108,8 +109,8 @@ services:
       - PIHOLE_DOCKER_TAG=latest
     ports:
       - "8080:80"  # Mapping port 8080 to Pi-hole's port 80
-      - "53:53/tcp"
-      - "53:53/udp"
+      - "1234:53/tcp"
+      - "1234:53/udp"
     volumes:
       - "./pihole/etc-pihole/:/etc/pihole/"
       - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
@@ -122,7 +123,6 @@ volumes:
   opensearch-data2:
   pihole_data:
   dnsmasq_data:
-  dashboards-data:
   
 networks:
   opensearch-net:
