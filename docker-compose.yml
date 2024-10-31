@@ -109,8 +109,8 @@ services:
       - PIHOLE_DOCKER_TAG=latest
     ports:
       - "8080:80"  # Mapping port 8080 to Pi-hole's port 80
-      - "1234:53/tcp"
-      - "1234:53/udp"
+      - "53:53/tcp"
+      - "53:53/udp"
     volumes:
       - "./pihole/etc-pihole/:/etc/pihole/"
       - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
