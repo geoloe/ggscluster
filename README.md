@@ -129,6 +129,12 @@ Certificate Not Trusted: Verify the root CA is added to your system's trusted ce
 
 Custom DNS Not Resolving: Verify Pi-hole is set as the DNS resolver on your router or client devices.
 
+If you get 
+
+`WARN[0000] Found orphan containers ([opensearch-node2 opensearch-dashboards opensearch-node1 pihole opensearch-nginx]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.`
+
+when using both docker-compose.yml. Ignore it, as both docker-compose files use the same network.
+
 ## License
 
 This project is licensed under the MIT License.
