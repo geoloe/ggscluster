@@ -1,6 +1,8 @@
-# GGSCluster - Dockerized OpenSearch, Nginx, and Pi-hole
+# GGSCluster - Dockerized OpenSearch, Nginx, Pi-hole and Logstash
 
 GGSCluster is a Docker Compose-based project to deploy a secure, self-hosted OpenSearch cluster with OpenSearch Dashboards, Nginx as a reverse proxy, and Pi-hole as a DNS resolver. This project enables secure HTTPS access to OpenSearch services and custom DNS resolution within a LAN environment.
+
+Logstash is an optional tool for ingesting data to the cluster. It is already configured.
 
 It can be customized to use another domain. Just adjust the nginx reverse proxy configuration, the CNs in the Cluster/Certificates and in your Router/Switch and Pihole DNS configuration.
 
