@@ -3,7 +3,7 @@ services:
     image: docker.elastic.co/logstash/logstash:8.15.3
     container_name: ls
     environment:
-      - LS_JAVA_OPTS=-Xms4g -Xmx4g
+      - "LS_JAVA_OPTS=-Xms4g -Xmx4g"
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/config/pipelines:/usr/share/logstash/config/pipelines
