@@ -1,0 +1,4 @@
+# /usr/share/logstash/config/logstash.conf
+pipeline.id: discogs
+path.config: "/usr/share/logstash/config/pipelines/discogs/*.conf"
+queue.type: persisted

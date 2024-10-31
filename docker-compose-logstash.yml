@@ -1,0 +1,25 @@
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.3
+    container_name: ls
+    environment:
+      - LS_JAVA_OPTS=-Xms4g -Xmx4g
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/config/pipelines:/usr/share/logstash/config/pipelines
+      - ./logstash/data:/usr/share/logstash/data
+      - ./certificates/root-ca.pem:/usr/share/logstash/config/certificates/root-ca.pem
+      - ./certificates/ls.pem:/usr/share/logstash/config/certificates/ls.pem
+      - ./certificates/ls-key.pem:/usr/share/logstash/config/certificates/ls-key.pem
+    command: >
+      bash -c "
+      bin/logstash-plugin install logstash-output-opensearch &&
+      /usr/local/bin/docker-entrypoint
+      "
+    networks:
+      - opensearch-net
+
+networks:
+  opensearch-net:
+    external: true  # Change this to an external network
+    name: ggscluster_opensearch-net

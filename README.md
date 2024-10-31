@@ -2,7 +2,7 @@
 
 GGSCluster is a Docker Compose-based project to deploy a secure, self-hosted OpenSearch cluster with OpenSearch Dashboards, Nginx as a reverse proxy, and Pi-hole as a DNS resolver. This project enables secure HTTPS access to OpenSearch services and custom DNS resolution within a LAN environment.
 
-It can be customized to use another domain.
+It can be customized to use another domain. Just adjust the nginx reverse proxy configuration, the CNs in the Cluster/Certificates and in your Router/Switch and Pihole DNS configuration.
 
 ## Features
 
@@ -10,6 +10,7 @@ It can be customized to use another domain.
 - **OpenSearch Dashboards**: A web-based GUI to interact with and visualize OpenSearch data.
 - **Nginx**: A reverse proxy server securing OpenSearch and Dashboards with HTTPS.
 - **Pi-hole**: A DNS resolver for custom local domain resolution within the LAN.
+- **Logstash**: An optional data ingest tool that can be used for adding data to the cluster
 
 ## Table of Contents
 
@@ -55,8 +56,9 @@ sudo update-ca-certificates
 ```
 
 
-
 ## Configuration
+
+### docker-compose.yml
 
 Docker Compose File:
 
@@ -80,12 +82,23 @@ Pi-hole:
 
     Configure Pi-hole to resolve ggscluster.com to your LAN IP (e.g., 192.168.2.234) by adding a custom DNS entry in Pi-hole’s GUI or setting a static DNS entry in docker-compose.yml.
 
+### docker-compose-logstash-yml
+
+Logstash:
+
+    Configure logstash to fetch and filter data via the logstash folder. You can create your data ingest pipelines. Please remember that the credentials can be created via the security tool from opensearch.
+
 ## Usage
 
 Start the Cluster:
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose.yml up -d
+```
+Start the Data Ingest Tool
+
+```bash
+docker-compose -f docker-compose-logstash.yml up -d
 ```
 
 Access OpenSearch Dashboards:
