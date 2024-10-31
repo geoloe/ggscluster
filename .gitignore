@@ -2,5 +2,5 @@ certificates/*.pem
 certificates/*.srl
 .env
 pihole/
-images/
-logstash/data/
+#images/
+#logstash/data/
