@@ -33,14 +33,14 @@ opensearch_security.cookie.secure: true
 ### CHANGE TO YOUR NEEDS ###
 opensearchDashboards.branding:
   logo:
-    defaultUrl: "https://localhost:5601/ui/assets/GGS.png"
-    darkModeUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
+    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS.png"
+    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
   mark:
-    defaultUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
-    darkModeUrl: "https://localhost:5601/ui/assets/GGS-logo-light.png"
+    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
+    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo-light.png"
   loadingLogo:
-    defaultUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
-    darkModeUrl: "https://localhost:5601/ui/assets/GGS-light.png"
-  faviconUrl: "https://localhost:5601/ui/assets/GGS-logo.png"
+    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
+    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-light.png"
+  faviconUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
   applicationTitle: "GGs Cluster"
 ### CHANGE TO YOUR NEEDS ###
