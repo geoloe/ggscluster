@@ -1,0 +1,23 @@
+# Use the official Apache image
+FROM httpd:latest
+
+# Enable SSL and other necessary Apache modules
+RUN apt-get update && \
+    apt-get install -y openssl && \
+    a2enmod ssl && \
+    a2enmod proxy && \
+    a2enmod proxy_http
+
+# Copy in SSL certificates
+COPY certificates/nginx.pem /usr/local/apache2/conf/server.crt
+COPY certificates/nginx-key.pem /usr/local/apache2/conf/server.key
+COPY certificates/root-ca.pem /usr/local/apache2/conf/root-ca.pem
+
+# Copy custom Apache configuration
+COPY apache.conf /usr/local/apache2/conf/httpd.conf
+
+# Create a directory for serving files
+RUN mkdir -p /usr/local/apache2/htdocs/files
+COPY files /usr/local/apache2/htdocs/files
+
+EXPOSE 8443
