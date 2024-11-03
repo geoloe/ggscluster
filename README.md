@@ -1,10 +1,10 @@
-# GGSCluster - Dockerized OpenSearch, Nginx, Pi-hole and Logstash
+# GGSCluster - Dockerized OpenSearch (Dashboards) with Nginx, Pi-hole, Apache, and Logstash
 
 GGSCluster is a Docker Compose-based project to deploy a secure, self-hosted OpenSearch cluster with OpenSearch Dashboards, Nginx as a reverse proxy, and Pi-hole as a DNS resolver. This project enables secure HTTPS access to OpenSearch services and custom DNS resolution within a LAN environment.
 
-Logstash is an optional tool for ingesting data to the cluster. It is already configured.
+Logstash is an optional tool for ingesting data into the cluster. It is already configured.
 
-It can be customized to use another domain. Just adjust the nginx reverse proxy configuration, the CNs in the Cluster/Certificates and in your Router/Switch and Pihole DNS configuration.
+This setup can be customized to use another domain. Just adjust the Nginx reverse proxy configuration, the CNs in the Cluster/Certificates, and your Router/Switch and Pi-hole DNS configuration.
 
 ## Features
 
@@ -12,7 +12,8 @@ It can be customized to use another domain. Just adjust the nginx reverse proxy 
 - **OpenSearch Dashboards**: A web-based GUI to interact with and visualize OpenSearch data.
 - **Nginx**: A reverse proxy server securing OpenSearch and Dashboards with HTTPS.
 - **Pi-hole**: A DNS resolver for custom local domain resolution within the LAN.
-- **Logstash**: An optional data ingest tool that can be used for adding data to the cluster
+- **Apache**: An optional file server for serving files under a custom domain.
+- **Logstash**: An optional data ingest tool that can be used for adding data to the cluster.
 
 ## Table of Contents
 
@@ -32,71 +33,61 @@ It can be customized to use another domain. Just adjust the nginx reverse proxy 
 ## Installation
 
 1. Clone this repository:
-```bash
-git clone https://github.com/yourusername/ggscluster.git
-cd ggscluster
-```
+    ```bash
+    git clone https://github.com/yourusername/ggscluster.git
+    cd ggscluster
+    ```
 
-Generate SSL certificates for OpenSearch, Nginx, and OpenSearch Dashboards:
+2. Generate SSL certificates for OpenSearch, Nginx, OpenSearch Dashboards, and Apache:
+    ```bash
+    ./certificates/generate_certificates.sh
+    ```
 
-```bash
-./certificates/generate_certificates.sh
-```
+   This script generates a root CA, server certificates, and keys for each service. Customize the `SERVICES` variable within the script to add or modify service names and SANs.
 
+3. Trust the Root CA:
 
-
-This script generates a root CA, server certificates, and keys for each service. Customize the SERVICES variable within the script to add or modify service names and SANs.
-
-Trust the Root CA:
-
-Add the generated root CA certificate (root-ca.pem) to your system's trusted certificates.
-For Ubuntu:
-
-```bash
-sudo cp /path/to/root-ca.pem /usr/local/share/ca-certificates/
-sudo update-ca-certificates
-```
-
+   Add the generated root CA certificate (`root-ca.pem`) to your system's trusted certificates.
+   For Ubuntu:
+    ```bash
+    sudo cp /path/to/root-ca.pem /usr/local/share/ca-certificates/
+    sudo update-ca-certificates
+    ```
 
 ## Configuration
 
 ### docker-compose.yml
 
-Docker Compose File:
+- **Docker Compose File**: Customize `docker-compose.yml` to specify service configurations, volume mappings, and ports.
 
-    Customize docker-compose.yml to specify service configurations, volume mappings, and ports.
+- **OpenSearch and Dashboards**: OpenSearch uses port 9200, while Nginx serves Dashboards over port 443.
 
-    OpenSearch and Dashboards use port 9200 and 5601 respectively.
+### Nginx Configuration
 
-Nginx Configuration:
+- Update `nginx.conf` to set up the reverse proxy for OpenSearch (`https://ggscluster.com:9200`) and Dashboards (`https://ggscluster.com`).
 
-    Update nginx.conf to set up the reverse proxy for OpenSearch (https://ggscluster.com:9200) and Dashboards (https://ggscluster.com:5601).
-
-    Ensure the SSL paths match the generated certificates:
-
-    nginx
-
+- Ensure the SSL paths match the generated certificates:
+    ```nginx
     ssl_certificate /etc/nginx/certs/nginx.pem;
     ssl_certificate_key /etc/nginx/certs/nginx-key.pem;
     ssl_trusted_certificate /etc/nginx/certs/root-ca.pem;
+    ```
 
-Pi-hole:
+### Pi-hole
 
-    Configure Pi-hole to resolve ggscluster.com to your LAN IP (e.g., 192.168.2.234) by adding a custom DNS entry in Pi-hole’s GUI or setting a static DNS entry in docker-compose.yml.
+- Configure Pi-hole to resolve `ggscluster.com` to your LAN IP (e.g., 192.168.2.234) by adding a custom DNS entry in Pi-hole’s GUI or setting a static DNS entry in `docker-compose.yml`.
 
-### docker-compose-logstash-yml
+### Logstash
 
-Logstash:
-
-    Configure logstash to fetch and filter data via the logstash folder. You can create your data ingest pipelines. Please remember that the credentials can be created via the security tool from opensearch.
+- Configure Logstash to fetch and filter data via the logstash folder. You can create your data ingest pipelines. Please remember that the credentials can be created via the security tool from OpenSearch.
 
 ## Usage
 
 Start the Cluster:
-
 ```bash
 docker-compose -f docker-compose.yml up -d
 ```
+
 Start the Data Ingest Tool
 
 ```bash
@@ -105,7 +96,7 @@ docker-compose -f docker-compose-logstash.yml up -d
 
 Access OpenSearch Dashboards:
 
-    Go to https://ggscluster.com:5601/app/home#/.
+    Go to https://ggscluster.com/app/home#/.
 
 Pi-hole Admin Interface:
 
@@ -114,6 +105,10 @@ Pi-hole Admin Interface:
 OpenSearch API:
 
     Interact with the OpenSearch API at https://ggscluster.com:9200.
+
+File Server:
+
+    Use your files under https://ggscluster.com/files
 
 ## Security
 
