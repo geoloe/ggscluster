@@ -34,8 +34,8 @@ This setup can be customized to use another domain. Just adjust the Nginx revers
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/ggscluster.git
-    cd ggscluster
+    git clone https://github.com/geoloe/oscluster.git
+    cd oscluster
     ```
 
 2. Generate SSL certificates for OpenSearch, Nginx, OpenSearch Dashboards, and Apache:
