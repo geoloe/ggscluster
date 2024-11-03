@@ -1,23 +1,22 @@
-# Use the official Apache image
-FROM httpd:latest
+# Dockerfile for Apache File Server
+FROM debian:latest
 
-# Enable SSL and other necessary Apache modules
+# Install Apache and necessary modules
 RUN apt-get update && \
-    apt-get install -y openssl && \
-    a2enmod ssl && \
-    a2enmod proxy && \
-    a2enmod proxy_http
+    apt-get install -y apache2 openssl && \
+    a2enmod ssl proxy proxy_http autoindex mpm_event authz_core authz_host && \
+    mkdir -p /var/log/apache2 && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy in SSL certificates
-COPY certificates/nginx.pem /usr/local/apache2/conf/server.crt
-COPY certificates/nginx-key.pem /usr/local/apache2/conf/server.key
-COPY certificates/root-ca.pem /usr/local/apache2/conf/root-ca.pem
+# Copy configuration files
+COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
+COPY ./certificates/apache.pem /etc/apache2/ssl/apache.pem
+COPY ./certificates/apache-key.pem /etc/apache2/ssl/apache-key.pem
 
-# Copy custom Apache configuration
-COPY apache.conf /usr/local/apache2/conf/httpd.conf
-
-# Create a directory for serving files
+# Ensure the directory for serving files exists
 RUN mkdir -p /usr/local/apache2/htdocs/files
-COPY files /usr/local/apache2/htdocs/files
 
-EXPOSE 8443
+# Expose ports
+EXPOSE 80 443
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]

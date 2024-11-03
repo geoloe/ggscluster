@@ -30,17 +30,14 @@ opensearch_security.readonly_mode.roles: ["kibana_read_only"]
 opensearch_security.cookie.secure: true
 
 # Branding Configuration
-### CHANGE TO YOUR NEEDS ###
 opensearchDashboards.branding:
   logo:
-    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS.png"
-    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
+    defaultUrl: "/files/images/GGS.png"
+    darkModeUrl: "/files/images/GGS-logo.png"
   mark:
-    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
-    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo-light.png"
+    defaultUrl: "/files/images/GGS-logo.png"
+    darkModeUrl: "/files/images/GGS-logo-light.png"
   loadingLogo:
-    defaultUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
-    darkModeUrl: "https://ggscluster.com:5601/ui/assets/GGS-light.png"
-  faviconUrl: "https://ggscluster.com:5601/ui/assets/GGS-logo.png"
-  applicationTitle: "GGs Cluster"
-### CHANGE TO YOUR NEEDS ###
+    defaultUrl: "/files/images/GGS-logo.png"
+    darkModeUrl: "/files/images/GGS-light.png"
+  faviconUrl: "/files/images/GGS-logo.png"

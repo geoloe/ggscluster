@@ -68,8 +68,6 @@ services:
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
-    expose:
-      - "5601" # Expose port 5601 for web access to OpenSearch Dashboards
     environment:
       - 'OPENSEARCH_HOSTS=["https://opensearch-node1:9200","https://opensearch-node2:9200"]'
     networks:
@@ -79,11 +77,6 @@ services:
       - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
       - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
       - ./certificates/root-ca.pem:/usr/share/opensearch-dashboards/config/root-ca.pem
-      ### CHANGE TO YOUR NEEDS ###
-      - ./images/GGS.png:/usr/share/opensearch-dashboards/assets/GGS.png
-      - ./images/GGS-logo.png:/usr/share/opensearch-dashboards/assets/GGS-logo.png
-      - ./images/GGS-light.png:/usr/share/opensearch-dashboards/assets/GGS-light.png
-      - ./images/GGS-logo-light.png:/usr/share/opensearch-dashboards/assets/GGS-logo-light.png
 
   nginx:
     image: nginx:latest
@@ -117,6 +110,20 @@ services:
     networks:
       - opensearch-net
 
+  apache-fileserver:
+    build:
+      context: .  # Use the current directory with Dockerfile.apache and certificates
+      dockerfile: Dockerfile.apache
+    container_name: apache-fileserver
+    ports:
+      - "8443:443"  # Expose the Apache HTTPS port
+    volumes:
+      - ./files:/usr/local/apache2/htdocs/files  # Mount files directory for Apache
+      - ./certificates/apache.pem:/etc/apache2/ssl/apache.pem
+      - ./certificates/apache-key.pem:/etc/apache2/ssl/apache-key.pem
+      - ./certificates/root-ca.pem:/etc/apache2/ssl/root-ca.pem
+    networks:
+      - opensearch-net
 
 volumes:
   opensearch-data1:
@@ -126,3 +133,4 @@ volumes:
   
 networks:
   opensearch-net:
+    driver: bridge
