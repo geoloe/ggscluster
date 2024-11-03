@@ -47,12 +47,13 @@ openssl req -x509 -new -nodes -key "${ROOT_CA_NAME}-key.pem" -sha256 -days 365 \
 
 # Array of service names and their respective SANs
 declare -A SERVICES
-SERVICES["node1"]="DNS:node1,DNS:opensearch-node1,DNS:ggscluster.com,DNS:localhost"
-SERVICES["node2"]="DNS:node2,DNS:opensearch-node2,DNS:ggscluster.com,DNS:localhost"
-SERVICES["admin"]="DNS:admin,DNS:ggscluster.com,DNS:localhost"
-SERVICES["nginx"]="DNS:nginx,DNS:ggscluster.com,DNS:localhost"
-SERVICES["ls"]="DNS:ls,DNS:ggscluster.com,DNS:localhost"
-SERVICES["opensearch-dashboards"]="DNS:opensearch-dashboards,DNS:ggscluster.com,DNS:localhost"
+SERVICES["node1"]="DNS:node1,DNS:opensearch-node1,DNS:ggscluster.com"
+SERVICES["node2"]="DNS:node2,DNS:opensearch-node2,DNS:ggscluster.com"
+SERVICES["admin"]="DNS:admin,DNS:ggscluster.com"
+SERVICES["nginx"]="DNS:nginx,DNS:ggscluster.com"
+SERVICES["apache"]="DNS:apache,DNS:ggscluster.com"
+SERVICES["ls"]="DNS:ls,DNS:ggscluster.com"
+SERVICES["opensearch-dashboards"]="DNS:opensearch-dashboards,DNS:ggscluster.com"
 
 # Generate certificates for each service
 for SERVICE in "${!SERVICES[@]}"; do
