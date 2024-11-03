@@ -2,11 +2,4 @@ certificates/*.pem
 certificates/*.srl
 .env
 pihole/
-#images/
-logstash/data/dead_letter_queue
-logstash/data/queue/discogs/.lock
-logstash/data/queue/discogs/.queue-version
-logstash/data/queue/discogs/checkpoint.head
-logstash/data/queue/discogs/page.9
-logstash/data/.lock
-logstash/data/uuid
+logstash/data/
