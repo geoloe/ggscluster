@@ -22,4 +22,4 @@ services:
 networks:
   opensearch-net:
     external: true  
-    name: opensearch-net # Change this to the network in use. docker network ls
+    name: ggscluster_opensearch-net # Change this to the network in use. docker network ls
