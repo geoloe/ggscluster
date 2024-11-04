@@ -100,6 +100,8 @@ services:
       - DNS2=1.0.0.1
       - WEBPASSWORD=admin  # Set this to access the admin panel
       - PIHOLE_DOCKER_TAG=latest
+      - ServerIP=192.168.2.234
+      - INTERFACE=wlp2s0 # Set this to listen on your pihole bind interface to where devices should send dns requests
     ports:
       - "8080:80"  # Mapping port 8080 to Pi-hole's port 80
       - "53:53/tcp"
