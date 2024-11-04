@@ -26,6 +26,9 @@ function renderHeader() {
     echo "                <li class='nav-item'>";
     echo "                    <a class='nav-link' href='/files'>Files</a>";
     echo "                </li>";
+    echo "                <li class='nav-item'>";
+    echo "                    <a class='nav-link' href='/admin'>Admin Console</a>";
+    echo "                </li>";
     echo "            </ul>";
     echo "            <form class='form-inline ml-auto'>";
     echo "                <input class='form-control mr-2' type='search' placeholder='Search files...' aria-label='Search' id='search' onkeyup='searchFiles()'>";
