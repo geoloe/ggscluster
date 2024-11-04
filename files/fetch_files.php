@@ -39,9 +39,13 @@ function renderFileList($files, $dir) {
         } else {
             // Generate relative path for the file link within subdirectories
             $relativePath = str_replace('./', '', "$dir/$file");
+
+            // Extract file extension to determine the file type
+            $fileType = pathinfo($file, PATHINFO_EXTENSION);
+
             echo "<li class='list-group-item d-flex justify-content-between align-items-left'>";
             echo "    <a href='/files/$relativePath' class='mr-2'>$file</a>";
-            echo "    <button class='btn btn-primary btn-sm' onclick='showContent(\"$file\",\"$dir\")'>Show Content</button>";
+            echo "    <button class='btn btn-primary btn-sm' onclick='showContent(\"/files/$relativePath\", \"$fileType\")'>Show Content</button>";
             echo "</li>";
         }
     }

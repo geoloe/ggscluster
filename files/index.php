@@ -34,9 +34,12 @@ function renderHeader() {
     echo "</nav>";
 }
 
+// In the footer
 function renderFooter() {
     echo "    <script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>";
     echo "    <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js'></script>";
+    echo "    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js'></script>";
+    echo "    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css'>";
     echo "    <script src='/files/scripts/main.js'></script>";
     echo "</body>";
 }
@@ -64,8 +67,27 @@ renderBreadcrumbs();
         </form>
         <div id="upload-feedback" class="mt-2"></div>
     </div>
+    <div id="file-list-container">
 
-    <div id="file-list-container"></div>
+    </div>
+    <!-- Modal Structure -->
+    <div class="modal fade" id="fileContentModal" tabindex="-1" aria-labelledby="fileContentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileContentModalLabel">File Content</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pre><code id="fileContent" class="language-plaintext"></code></pre>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <?php
