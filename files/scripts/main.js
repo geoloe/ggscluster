@@ -9,21 +9,6 @@ function searchFiles() {
     }
 }
 
-// Function to show the content of a file
-function showContent(fileName, fileDir) {
-    $.ajax({
-        url: `/files/${fileDir}/${fileName}`,
-        type: 'GET',
-        success: function(response) {
-            // Display the content in a modal or alert
-            alert(response); // You can replace this with a modal display if preferred
-        },
-        error: function() {
-            alert('Error fetching file content.');
-        }
-    });
-}
-
 // Function to load a specific page using AJAX
 function loadPage(page, dir = '.') {
     $.ajax({
@@ -89,27 +74,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function updateFileList() {
-    const sortBy = document.getElementById('sort-select').value;
-    const filterBy = document.getElementById('filter-select').value;
-
-    // Fetch the files with the selected sort and filter options
-    fetch(`/files/getFiles.php?sort=${sortBy}&filter=${filterBy}`)
-        .then(response => response.json())
-        .then(data => {
-            // Clear existing file list
-            const fileListContainer = document.getElementById('file-list-container');
-            fileListContainer.innerHTML = '';
-
-            // Create and display new file list
-            data.files.forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'list-group-item';
-                fileItem.innerHTML = `<a href="${file.url}">${file.name}</a> - ${file.size} bytes - ${file.date}`;
-                fileListContainer.appendChild(fileItem);
-            });
+function showContent(filePath, fileType) {
+    // Fetch file content from the server
+    fetch(filePath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("File not found");
+            }
+            return response.text();
         })
-        .catch(error => console.error('Error fetching file list:', error));
+        .then(content => {
+            // Insert content into modal and set syntax highlighting class based on fileType
+            document.getElementById("fileContent").textContent = content;
+            document.getElementById("fileContent").className = `language-${fileType || 'plaintext'}`;
+
+            // Show the modal
+            $('#fileContentModal').modal('show');
+
+            // Re-highlight the syntax
+            Prism.highlightAll();
+        })
+        .catch(error => {
+            console.error("Error fetching file content:", error);
+        });
 }
 
 // Load the first page on initial load
