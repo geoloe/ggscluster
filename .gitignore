@@ -3,3 +3,4 @@ certificates/*.srl
 .env
 pihole/
 logstash/data/
+files/creds
