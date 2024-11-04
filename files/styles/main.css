@@ -1,47 +1,127 @@
 body {
-    font-family: Arial, sans-serif;
+    background-color: white; /* Default background */
+    color: black; /* Default text color */
 }
 
-#breadcrumbs {
-    margin: 10px 0;
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #222; /* Dark background color */
+    color: #fff; /* Default text color in dark mode */
 }
 
-.header {
-    padding: 10px;
-    background: #f4f4f4;
+/* Navbar styles in dark mode */
+body.dark-mode #top-nav {
+    background-color: #444; /* Dark background for navbar */
 }
 
-.file-list {
-    display: flex;
-    flex-wrap: wrap;
+body.dark-mode #top-nav .navbar-brand {
+    color: #444; /* White text for the navbar brand */
 }
 
-.file-item {
-    margin: 10px;
+body.dark-mode #top-nav .navbar-nav .nav-link {
+    color: #444; /* White text for the navbar links */
+}
+
+body.dark-mode #top-nav .navbar-toggler-icon {
+    background-color: #fff; /* Ensure the toggler icon is visible */
+}
+
+body.dark-mode #top-nav .navbar-toggler {
+    border-color: #fff; /* Ensure toggler border is visible */
+}
+
+body.dark-mode #top-nav .navbar-nav .nav-link:hover {
+    color: #444; /* Lighter text on hover */
+}
+
+/* List group styles in dark mode */
+body.dark-mode .list-group {
+    background-color: #444; /* Dark background for list group */
+}
+
+body.dark-mode .list-group-item {
+    background-color: #444; /* Dark background for list items */
+    color: #fff; /* White text for list items */
+}
+
+/* Pagination styles */
+body.dark-mode .pagination {
+    background-color: #333; /* Dark background for pagination */
+}
+
+body.dark-mode .pagination .page-link {
+    color: #fff; /* White text for pagination links */
+    background-color: #444; /* Dark background for pagination links */
+}
+
+body.dark-mode .pagination .page-item.active .page-link {
+    background-color: #555; /* Darker background for active pagination link */
+    color: #fff; /* White text for active pagination link */
+}
+
+/* Breadcrumb styles in dark mode */
+body.dark-mode .breadcrumb {
+    background-color: #444; /* Dark background for breadcrumbs */
+    color: #fff; /* White text for breadcrumbs */
+}
+
+body.dark-mode .breadcrumb a {
+    color: #fff; /* White text for breadcrumb links */
+}
+
+/* Remove margin from list items */
+.list-group-item {
+    margin: 0; /* Remove margins */
+    padding: 8px 16px; /* Adjust padding as necessary */
+    border: none; /* Remove borders if not needed */
+}
+
+/* Optional: Add hover effect for list items */
+body.dark-mode .list-group-item:hover {
+    background-color: #555; /* Darker background on hover */
+}
+
+/* Add any additional styles as necessary */
+
+.switch {
     position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
 }
 
-.dropdown {
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
     position: absolute;
-    top: 30px; /* Adjust as needed */
-    left: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    z-index: 1;
-}
-
-.dropdown-content {
-    display: none;
-}
-
-.dropbtn {
     cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
 }
 
-.file-selection {
-    padding: 10px;
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
 }
 
-.file-checkbox {
-    margin-right: 5px;
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
 }
