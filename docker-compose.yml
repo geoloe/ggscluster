@@ -124,6 +124,7 @@ services:
       - ./certificates/apache.pem:/etc/apache2/ssl/apache.pem
       - ./certificates/apache-key.pem:/etc/apache2/ssl/apache-key.pem
       - ./certificates/root-ca.pem:/etc/apache2/ssl/root-ca.pem
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf
     networks:
       - opensearch-net
 

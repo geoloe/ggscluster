@@ -1,22 +1,35 @@
-# Dockerfile for Apache File Server
+# Dockerfile for Apache File Server with PHP support
 FROM debian:latest
 
-# Install Apache and necessary modules
+# Install Apache and necessary packages
 RUN apt-get update && \
     apt-get install -y apache2 openssl && \
-    a2enmod ssl proxy proxy_http autoindex mpm_event authz_core authz_host && \
     mkdir -p /var/log/apache2 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy configuration files
+# Disable mpm_prefork if it's enabled and enable mpm_event
+RUN a2dismod mpm_prefork && \
+    a2enmod mpm_event
+
+# Install PHP and necessary modules
+RUN apt-get update && \
+    apt-get install -y php libapache2-mod-php8.2 && \
+    a2enmod php8.2
+
+# Enable additional necessary modules
+RUN a2enmod ssl proxy proxy_http autoindex
+
+# Copy Apache configuration files
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
 COPY ./certificates/apache.pem /etc/apache2/ssl/apache.pem
 COPY ./certificates/apache-key.pem /etc/apache2/ssl/apache-key.pem
 
 # Ensure the directory for serving files exists
-RUN mkdir -p /usr/local/apache2/htdocs/files
+RUN mkdir -p /usr/local/apache2/htdocs/files && \
+    chown -R www-data:www-data /usr/local/apache2/htdocs/files
 
-# Expose ports
+# Expose ports for HTTP and HTTPS
 EXPOSE 80 443
 
+# Start Apache in the foreground
 CMD ["apache2ctl", "-D", "FOREGROUND"]
