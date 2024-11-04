@@ -125,6 +125,7 @@ services:
       - ./certificates/apache-key.pem:/etc/apache2/ssl/apache-key.pem
       - ./certificates/root-ca.pem:/etc/apache2/ssl/root-ca.pem
       - ./apache.conf:/etc/apache2/sites-available/000-default.conf
+      - apache-logs:/var/log/apache2  # Mount named volume for logs
     networks:
       - opensearch-net
 
@@ -133,6 +134,7 @@ volumes:
   opensearch-data2:
   pihole_data:
   dnsmasq_data:
+  apache-logs:
   
 networks:
   opensearch-net:

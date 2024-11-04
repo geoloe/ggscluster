@@ -28,8 +28,14 @@ COPY ./certificates/apache-key.pem /etc/apache2/ssl/apache-key.pem
 RUN mkdir -p /usr/local/apache2/htdocs/files && \
     chown -R www-data:www-data /usr/local/apache2/htdocs/files
 
+# Copy the entrypoint script
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Expose ports for HTTP and HTTPS
 EXPOSE 80 443
 
-# Start Apache in the foreground
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# Set the entrypoint to the custom script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
