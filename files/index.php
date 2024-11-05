@@ -59,17 +59,16 @@ renderBreadcrumbs();
 <main class="container mt-4">
     <div class="mb-4">
         <h5>Upload a New File - It will be uploaded to /files/uploads</h5>
-        <form id="upload-form" enctype="multipart/form-data">
-            <div class="form-group">
+        <form id="upload-form" enctype="multipart/form-data" class="d-flex align-items-center">
+            <div class="form-group mb-0 me-2">
                 <input type="file" class="form-control-file" id="file-input" name="file" required>
             </div>
             <button type="button" class="btn btn-primary" onclick="uploadFile()">Upload File</button>
         </form>
         <div id="upload-feedback" class="mt-2"></div>
     </div>
-    <div id="file-list-container">
-
-    </div>
+    <div id="file-list-container"></div>
+    
     <!-- Modal Structure -->
     <div class="modal fade" id="fileContentModal" tabindex="-1" aria-labelledby="fileContentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -83,8 +82,7 @@ renderBreadcrumbs();
                 <div class="modal-body">
                     <pre><code id="fileContent" class="language-plaintext"></code></pre>
                 </div>
-                <div class="modal-footer">
-                </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
