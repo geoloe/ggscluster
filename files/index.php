@@ -58,10 +58,10 @@ renderBreadcrumbs();
 ?>
 <main class="container mt-4">
     <div class="mb-4">
-        <h5>Upload a New File - It will be uploaded to /files/uploads</h5>
+        <h6>Upload a file</h6>
         <form id="upload-form" enctype="multipart/form-data" class="d-flex align-items-center">
-            <div class="form-group mb-0 me-2">
-                <input type="file" class="form-control-file" id="file-input" name="file" required>
+            <div class="flex-grow-1 me-2">
+                <input type="file" class="form-control" id="file-input" name="file" required>
             </div>
             <button type="button" class="btn btn-primary" onclick="uploadFile()">Upload File</button>
         </form>
@@ -87,6 +87,7 @@ renderBreadcrumbs();
         </div>
     </div>
 </main>
+
 
 <?php
 renderFooter();

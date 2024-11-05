@@ -10,39 +10,42 @@ $fileType = isset($_GET['fileType']) ? $_GET['fileType'] : null;
 
 // Get all unique file types for global filter
 $allFileTypes = getAllFileTypes($path);
+?>
+<!-- Render the filter dropdown based on all file types -->
+<div id="file-controls" class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div id="file-filter" class="d-flex align-items-center mb-2 mb-md-0">
+        <select id="fileTypeSelect" class="form-select me-2" onchange="filterFiles(this.value)">
+            <option value="">Select file type</option> <!-- Default option -->
+            <?php
+            // Loop through all file types to populate the dropdown
+            foreach ($allFileTypes as $type) {
+                // Maintain the selected option
+                $selected = ($type === $fileType) ? "selected" : "";
+                echo "<option value='$type' $selected>$type</option>";
+            }
+            ?>
+        </select>
+        <button class="btn btn-outline-secondary btn-sm" onclick="resetFilter()">Show All</button> <!-- Button to reset filter -->
+    </div>
 
-// Render the filter dropdown based on all file types
-echo "<div id='file-filter' class='mb-4'>";
-echo "<select id='fileTypeSelect' onchange='filterFiles(this.value)'>";
-echo "<option value=''>Select file type</option>"; // Default option
+    <!-- Add sorting controls for size and date -->
+    <div id="sorting-controls" class="d-flex align-items-center">
+        <label for="sortByDate" class="me-2">Sort by Date:</label>
+        <select id="sortByDate" class="form-select me-3" onchange="sortFiles()">
+            <option value="">Select</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
 
-// Loop through all file types to populate the dropdown
-foreach ($allFileTypes as $type) {
-    // Maintain the selected option
-    $selected = ($type === $fileType) ? "selected" : "";
-    echo "<option value='$type' $selected>$type</option>";
-}
-echo "</select>";
-echo "<button class='btn btn-secondary' onclick='resetFilter()'>Show All</button>"; // Button to reset filter
-echo "</div>";
-
-// Add sorting controls for size and date
-echo "<div id='sorting-controls' class='mb-4'>";
-echo "<label for='sortByDate'>Sort by Date:</label>";
-echo "<select id='sortByDate' onchange='sortFiles()'>";
-echo "<option value=''>Select</option>";
-echo "<option value='asc'>Ascending</option>";
-echo "<option value='desc'>Descending</option>";
-echo "</select>";
-
-echo "<label for='sortBySize'>Sort by Size:</label>";
-echo "<select id='sortBySize' onchange='sortFiles()'>";
-echo "<option value=''>Select</option>";
-echo "<option value='asc'>Ascending</option>";
-echo "<option value='desc'>Descending</option>";
-echo "</select>";
-echo "</div>";
-
+        <label for="sortBySize" class="me-2">Sort by Size:</label>
+        <select id="sortBySize" class="form-select" onchange="sortFiles()">
+            <option value="">Select</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+    </div>
+</div>
+<?php
 // Get the filtered list of files for pagination
 $filteredFiles = getFilteredFileList($path, $fileType);
 $totalFiles = count($filteredFiles);
