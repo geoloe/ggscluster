@@ -1,7 +1,7 @@
 <?php
 // Fetch parameters from AJAX request
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 5; // Number of items per page
+$limit = 10; // Number of items per page
 $offset = ($currentPage - 1) * $limit;
 $path = '.'; // Define the base directory
 
