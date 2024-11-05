@@ -9,22 +9,6 @@ function searchFiles() {
     }
 }
 
-// Function to load a specific page using AJAX
-function loadPage(page, dir = '.') {
-    $.ajax({
-        url: 'fetch_files.php',
-        type: 'GET',
-        data: { page: page, dir: dir },
-        success: function(response) {
-            // Update the file list container with the new content
-            $('#file-list-container').html(response);
-        },
-        error: function() {
-            alert('Failed to load files.');
-        }
-    });
-}
-
 // Function to load a specific directory using AJAX
 function loadDirectory(dir) {
     loadPage(1, dir); // Load the first page of the directory
@@ -97,6 +81,100 @@ function showContent(filePath, fileType) {
         .catch(error => {
             console.error("Error fetching file content:", error);
         });
+}
+
+function filterFiles(fileType) {
+    $.ajax({
+        url: 'fetch_files.php?fileType=' + encodeURIComponent(fileType) + '&page=1', // Reset to page 1 on filter
+        method: 'GET',
+        success: function (data) {
+            $('#file-list-container').html(data); // Update your file list container
+            // Update the dropdown selection
+            document.getElementById('fileTypeSelect').value = fileType;
+        },
+        error: function () {
+            console.error('Error filtering files of type: ' + fileType);
+        }
+    });
+}
+
+function sortFiles() {
+    // Get selected sort values
+    const sortByDate = document.getElementById('sortByDate').value;
+    const sortBySize = document.getElementById('sortBySize').value;
+
+    // Create query parameters to send with the request
+    const params = new URLSearchParams();
+    if (sortByDate) params.append('sortByDate', sortByDate);
+    if (sortBySize) params.append('sortBySize', sortBySize);
+
+    // Assuming your PHP file is named 'fetch_files.php'
+    const phpFileName = 'fetch_files.php'; // Change this to your actual PHP file name
+
+    // Send the AJAX request to update the file list
+    fetch(`${phpFileName}?${params.toString()}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('file-list-container').innerHTML = data; // Update the file list
+            
+            // Set the selected values for the sort dropdowns
+            document.getElementById('sortByDate').value = sortByDate;
+            document.getElementById('sortBySize').value = sortBySize;
+        })
+        .catch(error => console.error('Error fetching sorted files:', error));
+}
+
+function resetFilter() {
+    document.getElementById('fileTypeSelect').selectedIndex = 0; // Reset dropdown selection
+    $.ajax({
+        url: 'fetch_files.php?page=1', // Reset to page 1 for all files
+        method: 'GET',
+        success: function (data) {
+            $('#file-list-container').html(data); // Update your file list container
+        },
+        error: function () {
+            console.error('Error resetting filter');
+        }
+    });
+}
+
+function loadFilesInDirectory(directoryPath) {
+    // Fetch and display files from the specified directory
+    fetch(`fetch_files.php?path=${directoryPath}`) // Update with the correct URL
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('file-list-container').innerHTML = data; // Update file list container
+        })
+        .catch(error => {
+            console.error("Error loading directory:", error);
+        });
+}
+
+// Function to load a specific page using AJAX
+function loadPage(page, dir = '.', sortByDate = null, sortBySize = null) {
+    // Make an AJAX request to fetch the files
+    $.ajax({
+        url: 'fetch_files.php', // Your PHP file to handle the request
+        type: 'GET',
+        data: { 
+            page: page, 
+            dir: dir,
+            sortByDate: sortByDate,
+            sortBySize: sortBySize 
+        },
+        success: function(response) {
+            // Update the file list container with the new content
+            $('#file-list-container').html(response);
+        },
+        error: function() {
+            alert('Failed to load files.');
+        }
+    });
 }
 
 // Load the first page on initial load
