@@ -84,13 +84,13 @@ if (isset($_GET['sortByDate']) && $_GET['sortByDate'] === 'asc') {
 
 $totalPages = ceil($totalFiles / $limit);
 $filesForPage = array_slice($filteredFiles, $offset, $limit);
-
+$fileType = isset($_GET['fileType']) ? $_GET['fileType'] : ''; // Retrieve the file type
 // Function to render file list
 function renderFileList($filesForPage, $path) {
     foreach ($filesForPage as $file) {
         // Get file extension to determine file type for syntax highlighting
         $fileType = pathinfo($file, PATHINFO_EXTENSION);
-        $fileName = basename($file); // Get the file name only
+        //$fileName = basename($file); // Get the file name only
 
         // Get file size and creation date
         $fileSize = filesize($file); // Get file size in bytes
