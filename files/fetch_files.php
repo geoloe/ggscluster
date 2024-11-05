@@ -89,7 +89,7 @@ foreach ($filesForPage as $file) {
         // Check if it's the last part (the file)
         if ($index === count($pathParts) - 1) {
             // If it's the file, create a clickable link with the relative path
-            $breadcrumbItems[] = "<a href='{$filePathForLink}{$relativePath}' onclick=\"showContent('{$file}', '{$fileType}')\">{$part}</a>";
+            $breadcrumbItems[] = "<a href='{$relativePath}' onclick=\"showContent('{$file}', '{$fileType}')\">{$part}</a>";
         } else {
             // If it's a directory, just display the name without a link
             $breadcrumbItems[] = "<span>{$part}</span>";
