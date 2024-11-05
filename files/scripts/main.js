@@ -1,76 +1,93 @@
-// Function to search for files
-function searchFiles() {
-    let input = document.getElementById('search').value.toLowerCase();
-    let items = document.getElementsByClassName('list-group-item');
-
-    for (let item of items) {
-        let name = item.textContent.toLowerCase();
-        item.style.display = name.includes(input) ? "" : "none";
-    }
-}
-
 // Function to load a specific directory using AJAX
 function loadDirectory(dir) {
     loadPage(1, dir); // Load the first page of the directory
 }
 
-// Function to upload a file
+// Function to upload a file with progress tracking
 function uploadFile() {
-    const fileInput = document.getElementById('file-input');
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]);
+    const formData = new FormData(document.getElementById('upload-form'));
+    const xhr = new XMLHttpRequest();
+    
+    // Show the progress bar
+    $('#upload-progress-container').show();
+    $('#upload-progress').css('width', '0%').removeClass('bg-danger').addClass('bg-info');
+    $('#upload-feedback').text('');
 
-    $.ajax({
-        url: 'upload.php',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            $('#upload-feedback').html(`<div class='alert alert-success'>${response}</div>`);
-            loadPage(1); // Reload the file list after upload
-        },
-        error: function() {
-            $('#upload-feedback').html("<div class='alert alert-danger'>Failed to upload file.</div>");
+    // Track the upload progress
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            $('#upload-progress').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
         }
     });
+
+    // Handle successful completion
+    xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+            $('#upload-feedback').text(xhr.responseText).removeClass('text-danger').addClass('text-success');
+            loadPage(1);  // Reload the page if needed
+        } else {
+            $('#upload-feedback').text('Failed to upload file.').removeClass('text-success').addClass('text-danger');
+            $('#upload-progress').addClass('bg-danger');
+        }
+        $('#upload-progress-container').fadeOut(1500);  // Hide the progress bar after a delay
+    });
+
+    // Handle errors
+    xhr.addEventListener('error', function() {
+        $('#upload-feedback').text('Failed to upload file.').removeClass('text-success').addClass('text-danger');
+        $('#upload-progress').addClass('bg-danger');
+        $('#upload-progress-container').fadeOut(1500);  // Hide the progress bar after a delay
+    });
+
+    // Open the request and send the form data
+    xhr.open('POST', 'upload.php');
+    xhr.send(formData);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Function to apply or remove dark mode class
+    const applyDarkMode = (isDarkMode) => {
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+    };
 
     // Check localStorage for theme preference
     const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        toggle.checked = true; // Set toggle to checked if dark mode is active
-    }
+    const isDarkMode = currentTheme === 'dark';
+    applyDarkMode(isDarkMode);
+    toggle.checked = isDarkMode;
 
     // Toggle dark mode on switch click
     toggle.addEventListener('change', () => {
-        document.body.classList.toggle('dark-mode');
+        const isDarkMode = toggle.checked;
+        applyDarkMode(isDarkMode);
         // Store preference in localStorage
-        if (document.body.classList.contains('dark-mode')) {
-            localStorage.setItem('theme', 'dark');
-        } else {
-            localStorage.setItem('theme', 'light');
-        }
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
 });
 
+
+// Function to show file content in modal
 function showContent(filePath, fileType) {
-    // Fetch file content from the server
+    // Use AJAX to fetch the file content
     fetch(filePath)
         .then(response => {
             if (!response.ok) {
-                throw new Error("File not found");
+                throw new Error('Network response was not ok');
             }
-            return response.text();
+            return response.text(); // Assuming the file content is text
         })
-        .then(content => {
-            // Insert content into modal and set syntax highlighting class based on fileType
-            document.getElementById("fileContent").textContent = content;
-            document.getElementById("fileContent").className = `language-${fileType || 'plaintext'}`;
+        .then(data => {
+            // Populate the modal with the file content
+            document.getElementById('fileContent').textContent = data;
+            document.getElementById('fileContent').className = `language-${fileType || 'plaintext'}`;
 
             // Show the modal
             $('#fileContentModal').modal('show');
@@ -79,7 +96,8 @@ function showContent(filePath, fileType) {
             Prism.highlightAll();
         })
         .catch(error => {
-            console.error("Error fetching file content:", error);
+            console.error('There was a problem with the fetch operation:', error);
+            alert('Failed to load file content.');
         });
 }
 
@@ -129,18 +147,20 @@ function sortFiles() {
         .catch(error => console.error('Error fetching sorted files:', error));
 }
 
+// Function to reset filters
 function resetFilter() {
-    document.getElementById('fileTypeSelect').selectedIndex = 0; // Reset dropdown selection
-    $.ajax({
-        url: 'fetch_files.php?page=1', // Reset to page 1 for all files
-        method: 'GET',
-        success: function (data) {
-            $('#file-list-container').html(data); // Update your file list container
-        },
-        error: function () {
-            console.error('Error resetting filter');
-        }
-    });
+    // Clear the file type filter
+    document.getElementById('fileTypeSelect').value = '';
+
+    // Reset sorting filters
+    document.getElementById('sortByDate').value = '';
+    document.getElementById('sortBySize').value = '';
+
+    // Clear search query
+    document.getElementById('search').value = '';
+
+    // Reload the first page without any filters
+    loadPage(1);
 }
 
 function loadFilesInDirectory(directoryPath) {
@@ -156,16 +176,26 @@ function loadFilesInDirectory(directoryPath) {
 }
 
 // Function to load a specific page using AJAX
-function loadPage(page, dir = '.', sortByDate = null, sortBySize = null) {
+function loadPage(page, dir = '.') {
+    // Get selected sort values
+    const sortByDate = document.getElementById('sortByDate').value;
+    const sortBySize = document.getElementById('sortBySize').value;
+    const searchQuery = document.getElementById('search').value.trim();
+
+    // Get selected file type
+    const fileTypeSelect = document.getElementById('fileTypeSelect').value;
+
     // Make an AJAX request to fetch the files
     $.ajax({
-        url: 'fetch_files.php', // Your PHP file to handle the request
+        url: 'fetch_files.php',
         type: 'GET',
         data: { 
             page: page, 
             dir: dir,
             sortByDate: sortByDate,
-            sortBySize: sortBySize 
+            sortBySize: sortBySize,
+            fileType: fileTypeSelect,
+            search: searchQuery
         },
         success: function(response) {
             // Update the file list container with the new content
@@ -176,6 +206,29 @@ function loadPage(page, dir = '.', sortByDate = null, sortBySize = null) {
         }
     });
 }
+
+// Function to handle search input with debouncing
+const searchFiles = debounce(function() {
+    // Trigger the search by loading the first page with the search query
+    loadPage(1);
+}, 300); // 300 milliseconds delay
+
+// Debounce function to limit the rate of function calls
+function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+}
+
+document.getElementById('file-input').addEventListener('change', function() {
+    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+    this.nextElementSibling.textContent = fileName; // Change the label to show the file name
+});
+
 
 // Load the first page on initial load
 $(document).ready(function() {
