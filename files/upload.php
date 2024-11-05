@@ -44,7 +44,12 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         'application/x-x509-ca-cert',   // For .crt files
         'application/x-pem-file',       // For .pem files
         'application/octet-stream',     // For .key files (common default MIME)
-        'application/x-pkcs12'          // For .p12 or .pfx certificate files
+        'application/x-pkcs12',          // For .p12 or .pfx certificate files
+
+        //Other
+        'application/x-iso9660-image',
+        'model/x.stl-binary',
+        'application/x-gamecube-rom'
     ];
 
     // Check file size
