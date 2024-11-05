@@ -7,6 +7,7 @@ function renderHeader() {
     echo "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>";
     echo "    <title>GGSCluster File Server</title>";
     echo "    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
+    echo "    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'>";
     echo "    <link rel='stylesheet' href='/files/styles/main.css'>";
     echo "</head>";
     echo "<body>";
@@ -110,41 +111,51 @@ renderBreadcrumbs($currentDir);
     <div class="mb-4">
         <h6>Upload a file</h6>
         <form id="upload-form" enctype="multipart/form-data" class="d-flex align-items-center">
-            <div class="flex-grow-1 me-2">
-                <input type="file" class="form-control" id="file-input" name="file" required>
-            </div>
-            <button type="button" class='btn btn-info btn-sm' onclick="uploadFile()">Upload File</button>
+        <div class="custom-file-upload">
+            <input type="file" id="file-input" name="file" required="" />
+            <label for="file-input">Choose File</label>
+        </div>
+            <button type="button" class="btn btn-info btn-sm" onclick="uploadFile()">Upload File</button>
         </form>
         <div id="upload-feedback" class="mt-2"></div>
+        <!-- Progress Bar -->
+        <div class="progress mt-2" style="height: 20px; display: none;" id="upload-progress-container">
+            <div id="upload-progress" class="progress-bar progress-bar-striped" role="progressbar" 
+                style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
     </div>
     <!-- Filter and Sorting Controls -->
-    <div id="file-controls" class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div id="file-controls" class="mb-4 p-3 rounded bg-light border d-flex flex-column flex-md-row justify-content-between align-items-center shadow-sm">
+        
+        <!-- Filter Section -->
         <div id="file-filter" class="d-flex align-items-center mb-2 mb-md-0">
-            <select id="fileTypeSelect" class="form-select me-2" onchange="loadPage(1)">
-                <option value="">Select file type</option>
+            <label for="fileTypeSelect" class="form-label me-2 mb-0 text-muted">Filter by Type:</label>
+            <select id="fileTypeSelect" class="form-select form-select-sm me-2" onchange="loadPage(1)">
+                <option value="">All Types</option>
                 <?php
-                // Define or include the getAllFileTypes function before calling it
-                $allFileTypes = getAllFileTypes($currentDir); // Adjust function to handle $currentDir if needed
+                $allFileTypes = getAllFileTypes($currentDir);
                 foreach ($allFileTypes as $type) {
-                    $selected = ($type === $fileType) ? "selected" : "";
+                    $selected = ($type) ? "selected" : "";
                     echo "<option value='$type' $selected>$type</option>";
                 }
                 ?>
             </select>
-            <button class="btn btn-outline-secondary btn-sm" onclick="resetFilter()">Show All</button>
+            <button class="btn btn-outline-secondary btn-sm ms-2" onclick="resetFilter()">
+                <i class="bi bi-x-circle me-1"></i> Show All
+            </button>
         </div>
 
-        <!-- Sorting controls for size and date -->
+        <!-- Sorting Controls Section -->
         <div id="sorting-controls" class="d-flex align-items-center">
-            <label for="sortByDate" class="me-2">Sort by Date:</label>
-            <select id="sortByDate" class="form-select me-3" onchange="loadPage(1)">
+            <label for="sortByDate" class="form-label me-2 mb-0 text-muted">Sort by Date:</label>
+            <select id="sortByDate" class="form-select form-select-sm me-3" onchange="loadPage(1)">
                 <option value="">Select</option>
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
 
-            <label for="sortBySize" class="me-2">Sort by Size:</label>
-            <select id="sortBySize" class="form-select" onchange="loadPage(1)">
+            <label for="sortBySize" class="form-label me-2 mb-0 text-muted">Sort by Size:</label>
+            <select id="sortBySize" class="form-select form-select-sm" onchange="loadPage(1)">
                 <option value="">Select</option>
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>

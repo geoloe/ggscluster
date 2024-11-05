@@ -52,7 +52,7 @@ function getFilteredFileList($dir, $fileType = null, $search = null) {
         $filteredFiles[] = $file; // Add to the list of filtered files
     }
 
-    console_log($filteredFiles);
+    //console_log($filteredFiles);
 
     return $filteredFiles;
 }
@@ -123,25 +123,51 @@ function renderFileList($filesForPage, $path) {
         // Join breadcrumb items with ' > '
         $breadcrumb = implode(' &gt; ', $breadcrumbItems);
 
+        // Define thumbnail URL or icon
+        $thumbnail = '';
+        if (in_array($fileType, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
+            $thumbnail = "<img src='{$file}' class='file-thumbnail me-3' alt='{$fileType} file'>";
+        } elseif ($fileType === 'pdf') {
+            $thumbnail = "<i class='fas fa-file-pdf file-thumbnail text-danger me-3'></i>";
+        } elseif (in_array($fileType, ['txt', 'log', 'csv'])) {
+            $thumbnail = "<i class='fas fa-file-alt file-thumbnail text-info me-3'></i>";
+        } else {
+            $thumbnail = "<i class='fas fa-file file-thumbnail text-secondary me-3'></i>";
+        }        
+
         // Format file size to KB/MB for better readability
         $formattedSize = $fileSize < 1024 ? "{$fileSize} bytes" : ($fileSize < 1048576 ? round($fileSize / 1024, 2) . " KB" : round($fileSize / 1048576, 2) . " MB");
 
         // Create a wrapper for breadcrumb and file info
-        echo "<div class='list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start'>"; // Overall container
-        echo "    <div class='d-flex flex-grow-1 align-items-end justify-content-between'>"; // Flexible div to allow space for text
-        echo "        <span class='me-3'>{$breadcrumb}</span>"; // Show breadcrumb
+        echo "<div class='list-group-item d-flex flex-column flex-md-row justify-content-between align-items-center'>"; // Overall container
 
-        // Create a div for size and creation date, align text to center
-        echo "        <div class='text-muted text-center flex-grow-1'>"; // Center-aligned container
-        echo "            <span class='me-3'>Size: {$formattedSize}</span>"; // Show file size
-        echo "            <span>Created: {$fileCreationDate}</span>"; // Show creation date
+        // Left section: thumbnail and file details
+        echo "    <div class='d-flex align-items-center flex-grow-1'>"; // Flex container for thumbnail and details
+
+        // Display the thumbnail or icon directly
+        if (strpos($thumbnail, '<i') !== false) {
+            // If $thumbnail contains HTML (like an <i> tag for an icon)
+            echo "<span class='me-4'>" . $thumbnail . "</span>"; // Add Bootstrap margin-end class for spacing
+        } else {
+            // Otherwise, it's an image URL; render it as an <img> tag
+            echo "<img src='{$thumbnail}' class='file-thumbnail me-4' alt='{$fileType} file' style='width: 50px; height: 50px;'>";
+        }
+
+        // Breadcrumb and file info
+        echo "        <div>"; // Wrapper for breadcrumb and info
+        echo "            <span class='me-3'>{$breadcrumb}</span>"; // Show breadcrumb
+        echo "            <div class='text-muted'>"; // Size and creation date container
+        echo "                <span class='me-3'>Size: {$formattedSize}</span>"; // Show file size
+        echo "                <span>Created: {$fileCreationDate}</span>"; // Show creation date
+        echo "            </div>";
         echo "        </div>";
         echo "    </div>";
 
-        // Button to show content, wrapped in a div for proper alignment
-        echo "    <div class='mt-2 mt-md-0'>"; // Margin top for spacing on small screens
+        // Right section: button to show content
+        echo "    <div class='mt-2 mt-md-0'>"; // Right-aligned button with margin-top for small screens
         echo "        <button class='btn btn-info btn-sm' onclick='showContent(\"{$file}\", \"{$fileType}\")'>Show Content</button>"; // Button to show content
         echo "    </div>";
+
         echo "</div>";
     }
 }

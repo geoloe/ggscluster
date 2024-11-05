@@ -3,48 +3,76 @@ function loadDirectory(dir) {
     loadPage(1, dir); // Load the first page of the directory
 }
 
-// Function to upload a file
+// Function to upload a file with progress tracking
 function uploadFile() {
     const formData = new FormData(document.getElementById('upload-form'));
+    const xhr = new XMLHttpRequest();
     
-    $.ajax({
-        url: 'upload.php',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            $('#upload-feedback').text(response).removeClass('text-danger').addClass('text-success');
-            // Reload the current page
-            loadPage(1);
-        },
-        error: function() {
-            $('#upload-feedback').text('Failed to upload file.').removeClass('text-success').addClass('text-danger');
+    // Show the progress bar
+    $('#upload-progress-container').show();
+    $('#upload-progress').css('width', '0%').removeClass('bg-danger').addClass('bg-info');
+    $('#upload-feedback').text('');
+
+    // Track the upload progress
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            $('#upload-progress').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete);
         }
     });
+
+    // Handle successful completion
+    xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+            $('#upload-feedback').text(xhr.responseText).removeClass('text-danger').addClass('text-success');
+            loadPage(1);  // Reload the page if needed
+        } else {
+            $('#upload-feedback').text('Failed to upload file.').removeClass('text-success').addClass('text-danger');
+            $('#upload-progress').addClass('bg-danger');
+        }
+        $('#upload-progress-container').fadeOut(1500);  // Hide the progress bar after a delay
+    });
+
+    // Handle errors
+    xhr.addEventListener('error', function() {
+        $('#upload-feedback').text('Failed to upload file.').removeClass('text-success').addClass('text-danger');
+        $('#upload-progress').addClass('bg-danger');
+        $('#upload-progress-container').fadeOut(1500);  // Hide the progress bar after a delay
+    });
+
+    // Open the request and send the form data
+    xhr.open('POST', 'upload.php');
+    xhr.send(formData);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Function to apply or remove dark mode class
+    const applyDarkMode = (isDarkMode) => {
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+    };
 
     // Check localStorage for theme preference
     const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        toggle.checked = true; // Set toggle to checked if dark mode is active
-    }
+    const isDarkMode = currentTheme === 'dark';
+    applyDarkMode(isDarkMode);
+    toggle.checked = isDarkMode;
 
     // Toggle dark mode on switch click
     toggle.addEventListener('change', () => {
-        document.body.classList.toggle('dark-mode');
+        const isDarkMode = toggle.checked;
+        applyDarkMode(isDarkMode);
         // Store preference in localStorage
-        if (document.body.classList.contains('dark-mode')) {
-            localStorage.setItem('theme', 'dark');
-        } else {
-            localStorage.setItem('theme', 'light');
-        }
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
 });
+
 
 // Function to show file content in modal
 function showContent(filePath, fileType) {
@@ -195,6 +223,12 @@ function debounce(func, delay) {
         debounceTimer = setTimeout(() => func.apply(context, args), delay);
     };
 }
+
+document.getElementById('file-input').addEventListener('change', function() {
+    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+    this.nextElementSibling.textContent = fileName; // Change the label to show the file name
+});
+
 
 // Load the first page on initial load
 $(document).ready(function() {

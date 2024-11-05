@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
     background-color: white; /* Default background */
     color: black; /* Default text color */
@@ -6,74 +7,53 @@ body {
 /* Dark mode styles */
 body.dark-mode {
     background-color: #222; /* Dark background color */
-    color: #fff; /* Default text color in dark mode */
+    color: #fff; /* Text color in dark mode */
 }
 
-/* Navbar styles in dark mode */
+/* Dark mode styles for .bg-light when .dark-mode is active */
+body.dark-mode .bg-light {
+    background-color: #444 !important; /* Dark background color for dark mode */
+    color: #ffffff; /* Light text color for better contrast */
+}
+
+/* Additional styles for links within .bg-light in dark mode */
+body.dark-mode .bg-light a {
+    color: #ffffff; /* Light link color for readability */
+}
+
+body.dark-mode .bg-light a:hover {
+    color: #d3d3d3; /* Lighter link color on hover */
+}
+
+/* Optional: Adjust other elements in dark mode */
 body.dark-mode #top-nav {
-    background-color: #444; /* Dark background for navbar */
+    background-color: #495057; /* Darker navbar background */
+    color: #ffffff; /* Light text for navbar */
 }
 
-body.dark-mode #top-nav .navbar-brand {
-    color: #444; /* White text for the navbar brand */
+body.dark-mode #top-nav .nav-link {
+    color: #ffffff; /* Light color for navbar links */
 }
 
-body.dark-mode #top-nav .navbar-nav .nav-link {
-    color: #444; /* White text for the navbar links */
+body.dark-mode #top-nav .nav-link:hover {
+    color: #d3d3d3; /* Lighter color on hover */
 }
 
-body.dark-mode #top-nav .navbar-toggler-icon {
-    background-color: #fff; /* Ensure the toggler icon is visible */
+/* Optional: Adjust the switch style for the dark mode toggle */
+body.dark-mode .switch input:checked + .slider {
+    background-color: #2196F3; /* Blue color when the switch is active */
 }
 
-body.dark-mode #top-nav .navbar-toggler {
-    border-color: #fff; /* Ensure toggler border is visible */
-}
-
-body.dark-mode #top-nav .navbar-nav .nav-link:hover {
-    color: #444; /* Lighter text on hover */
-}
-
-/* List group styles in dark mode */
+/* List Group and List Items in Dark Mode */
 body.dark-mode .list-group {
-    background-color: #444; /* Dark background for list group */
+    background-color: #333; /* Dark background for list group */
 }
 
 body.dark-mode .list-group-item {
-    background-color: #444; /* Dark background for list items */
-    color: #fff; /* White text for list items */
-}
-
-/* Pagination styles */
-body.dark-mode .pagination {
-    background-color: #333; /* Dark background for pagination */
-}
-
-body.dark-mode .pagination .page-link {
-    color: #fff; /* White text for pagination links */
-    background-color: #444; /* Dark background for pagination links */
-}
-
-body.dark-mode .pagination .page-item.active .page-link {
-    background-color: #555; /* Darker background for active pagination link */
-    color: #fff; /* White text for active pagination link */
-}
-
-/* Breadcrumb styles in dark mode */
-body.dark-mode .breadcrumb {
-    background-color: #444; /* Dark background for breadcrumbs */
-    color: #fff; /* White text for breadcrumbs */
-}
-
-body.dark-mode .breadcrumb a {
-    color: #fff; /* White text for breadcrumb links */
-}
-
-/* Remove margin from list items */
-.list-group-item {
-    margin: 0; /* Remove margins */
-    padding: 8px 16px; /* Adjust padding as necessary */
-    border: none; /* Remove borders if not needed */
+    background-color: #444; /* Slightly lighter background for list items */
+    color: #eee; /* White text for list items */
+    border: none; /* Remove borders */
+    padding: 8px 16px; /* Padding for consistency */
 }
 
 /* Optional: Add hover effect for list items */
@@ -81,8 +61,65 @@ body.dark-mode .list-group-item:hover {
     background-color: #555; /* Darker background on hover */
 }
 
-/* Add any additional styles as necessary */
+/* Pagination Styling in Dark Mode */
+body.dark-mode .pagination {
+    background-color: #333; /* Dark background for pagination */
+}
 
+body.dark-mode .pagination .page-link {
+    color: #ddd; /* Soft white text for pagination links */
+    background-color: #444; /* Darker background for pagination links */
+    border: 1px solid #555; /* Border for better separation */
+}
+
+body.dark-mode .pagination .page-item.active .page-link {
+    background-color: #555; /* Darker active background */
+    color: #fff; /* White text for active pagination link */
+    border-color: #666; /* Border for active link */
+}
+
+/* Breadcrumb Styling in Dark Mode */
+body.dark-mode .breadcrumb {
+    background-color: #333; /* Dark background for breadcrumbs */
+    color: #ddd; /* Soft white text for breadcrumbs */
+}
+
+body.dark-mode .breadcrumb a {
+    color: #ddd; /* White text for breadcrumb links */
+}
+
+body.dark-mode .breadcrumb a:hover {
+    color: #bbb; /* Slightly lighter on hover */
+}
+
+/* Progress Bar Customization */
+.progress {
+    height: 20px; /* Default height */
+}
+
+.progress-bar.bg-info {
+    background-color: #17a2b8; /* Info state color */
+}
+
+.progress-bar.bg-danger {
+    background-color: #dc3545; /* Danger state color */
+}
+
+/* Thumbnails Styling */
+.file-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover; /* Ensures image scales correctly */
+    border-radius: 5px; /* Rounded corners */
+    margin-right: 1.5rem; /* Spacing adjustment */
+}
+
+/* Dark mode thumbnail adjustment */
+body.dark-mode .file-thumbnail {
+    border: 1px solid #666; /* Border for better visibility in dark mode */
+}
+
+/* Toggle Switch Styling */
 .switch {
     position: relative;
     display: inline-block;
@@ -105,6 +142,7 @@ body.dark-mode .list-group-item:hover {
     bottom: 0;
     background-color: #ccc;
     transition: .4s;
+    border-radius: 34px; /* Rounded slider for modern look */
 }
 
 .slider:before {
@@ -116,12 +154,70 @@ body.dark-mode .list-group-item:hover {
     bottom: 4px;
     background-color: white;
     transition: .4s;
+    border-radius: 50%; /* Circle for switch knob */
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #2196F3; /* Active color */
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);
+    transform: translateX(26px); /* Moves the knob when active */
+}
+
+/* Dropdowns and Buttons in Dark Mode */
+body.dark-mode select.form-select,
+body.dark-mode button {
+    background-color: #333;
+    color: #ddd;
+    border: 1px solid #555;
+}
+
+body.dark-mode select.form-select:focus,
+body.dark-mode button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Soft glow */
+}
+
+body.dark-mode button:hover {
+    background-color: #444; /* Darker button on hover */
+}
+
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%; /* Set to full width */
+    max-width: 600px; /* Optional max width for larger screens */
+    margin: 20px 0; /* Add vertical margin, remove auto for left alignment */
+}
+
+.custom-file-upload input[type="file"] {
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    filter: alpha(opacity=0); /* For IE8 and earlier */
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.custom-file-upload label {
+    padding: 15px 30px; /* Increase padding for a larger button */
+    border: 1px solid #007bff;
+    color: #007bff;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-block;
+    width: 100%; /* Make the label take full width */
+    text-align: center; /* Center the text within the button */
+}
+
+.custom-file-upload label:hover {
+    background-color: #007bff;
+    color: #fff;
 }
