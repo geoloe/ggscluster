@@ -110,7 +110,7 @@ function renderFileList($filesForPage, $path) {
             // Check if it's the last part (the file)
             if ($index === count($pathParts) - 1) {
                 // Truncate long file names
-                $shortName = (strlen($part) > 20) ? substr($part, 0, 37) . '...' : $part;
+                $shortName = (strlen($part) > 20) ? substr($part, 0, 25) . '...' : $part;
         
                 // If it's the file, create a clickable link with the relative path
                 $breadcrumbItems[] = "<a href='{$relativePath}' onclick=\"showContent('{$file}', '{$fileType}')\">{$shortName}</a>";
