@@ -27,5 +27,5 @@ INSERT INTO roles (name) VALUES
 -- Insert a sample admin user with hashed password
 -- Replace 'password_hash('securePassword123', PASSWORD_DEFAULT)' with the actual hash for better security
 INSERT INTO users (username, password, role_id) VALUES 
-('admin', '<hash>', 1), -- securePassword123
-('viewer', '<hash>', 2); -- secureViewerPassword123
+('admin', '$2y$10$RO.1covtZ3WrDspVOghgf.9Vdk5tl53.Z3vRERJgIfR8/oMsv6vFq', 1), -- securePassword123
+('viewer', '$2y$10$UspqGZhPCG.ijKpz/f2Y4eQbTJF3eQ0.uh.vGySBHmZKwGHzs9VSe', 2); -- secureViewerPassword123

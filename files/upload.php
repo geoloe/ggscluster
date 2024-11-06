@@ -56,7 +56,10 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         //Other
         'application/x-iso9660-image',
         'model/x.stl-binary',
-        'application/x-gamecube-rom'
+        'application/x-gamecube-rom',
+        'application/x-cd-image',
+        'application/x-msdownload',
+        'application/x-ms-dos-executable'
     ];
 
     // Check file size
