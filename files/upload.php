@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Check if user is logged in and has the required role
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], [1])) {
+    header('Location: unauthorized.php'); // Redirect to a custom page
+    exit();
+}
 // Directory where files will be uploaded
 $targetDirectory = '/usr/local/apache2/htdocs/files/uploads/'; // Make sure this ends with a slash
 
