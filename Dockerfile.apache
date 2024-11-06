@@ -13,7 +13,7 @@ RUN a2dismod mpm_prefork && \
 
 # Install PHP and necessary modules
 RUN apt-get update && \
-    apt-get install -y php libapache2-mod-php8.2 && \
+    apt-get install -y php libapache2-mod-php8.2 php8.2-mysql mariadb-client && \
     a2enmod php8.2
 
 # Enable additional necessary modules

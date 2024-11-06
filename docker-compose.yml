@@ -128,12 +128,31 @@ services:
       - apache-logs:/var/log/apache2  # Mount named volume for logs
     networks:
       - opensearch-net
+    depends_on:
+      - mysql-db  # Ensure MySQL starts before Apache
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Change this to a strong password
+      MYSQL_DATABASE: file_server
+      MYSQL_USER: fileuser
+      MYSQL_PASSWORD: filepassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d  # For initial setup scripts
+    networks:
+      - opensearch-net
+    ports:
+      - "33006:3306"
 
 volumes:
   opensearch-data1:
   opensearch-data2:
   pihole_data:
   dnsmasq_data:
+  mysql-data:
   apache-logs:
   
 networks:

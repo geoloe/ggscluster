@@ -1,4 +1,15 @@
 <?php
+session_start();
+
+// Check if user is logged in and has the required role
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], [1, 2])) {
+    $_SESSION['error_message'] = 'Unauthorized access. Please log in with appropriate permissions.';
+    header('Location: login.php'); // Redirect to login page
+    exit();
+}
+
+
+
 function renderHeader() {
     echo "<!DOCTYPE html>";
     echo "<html lang='en'>";
@@ -30,6 +41,11 @@ function renderHeader() {
     echo "            <form class='form-inline ml-auto'>";
     echo "                <input class='form-control mr-sm-2' type='search' placeholder='Search files...' aria-label='Search' id='search' onkeyup='searchFiles()'>";
     echo "            </form>";
+    echo "            <ul class='navbar-nav ml-auto'>";
+    echo "                <li class='nav-item'>";
+    echo "                    <a class='nav-link' href='logout.php'>Logout</a>";
+    echo "                </li>";
+    echo "            </ul>";
     echo "        </div>";
     echo "    </div>";
     echo "</nav>";
@@ -109,19 +125,28 @@ renderBreadcrumbs($currentDir);
 ?>
 <main class="container mt-4">
     <div class="mb-4">
-        <h6>Upload a file</h6>
-        <form id="upload-form" enctype="multipart/form-data" class="d-flex align-items-center">
-        <div class="custom-file-upload">
-            <input type="file" id="file-input" name="file" required="" />
-            <label for="file-input">Choose File</label>
-        </div>
-            <button type="button" class="btn btn-info btn-sm" onclick="uploadFile()">Upload File</button>
-        </form>
+        <?php if (isset($_SESSION['user_id'])): ?>
+
+        <p>Welcome, <?= htmlspecialchars($_SESSION['username'] ?? 'Chief') ?>!</p>
+
+        <?php if (in_array($_SESSION['role'], [1])): ?>
+            <h6>Upload a file</h6>
+            <form id="upload-form" enctype="multipart/form-data" class="d-flex align-items-center">
+            <div class="custom-file-upload">
+                <input type="file" id="file-input" name="file" required="" />
+                <label for="file-input">Choose File</label>
+            </div>
+                <button type="button" class="btn btn-info btn-sm" onclick="uploadFile()">Upload File</button>
+            </form>
+        <?php endif; ?>
+
+        <?php else: ?>
+            <p><a href="login.php">Login</a></p>
+        <?php endif; ?>
+        
         <div id="upload-feedback" class="mt-2"></div>
-        <!-- Progress Bar -->
         <div class="progress mt-2" style="height: 20px; display: none;" id="upload-progress-container">
-            <div id="upload-progress" class="progress-bar progress-bar-striped" role="progressbar" 
-                style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+            <div id="upload-progress" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
     <!-- Filter and Sorting Controls -->
