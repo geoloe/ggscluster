@@ -1,4 +1,8 @@
 # /usr/share/logstash/config/logstash.conf
-pipeline.id: discogs
-path.config: "/usr/share/logstash/config/pipelines/discogs/*.conf"
+#pipeline.id: discogs
+#path.config: "/usr/share/logstash/config/pipelines/discogs/*.conf"
+#queue.type: persisted
+
+pipeline.id: shodan
+path.config: "/usr/share/logstash/config/pipelines/shodan/*.conf"
 queue.type: persisted
