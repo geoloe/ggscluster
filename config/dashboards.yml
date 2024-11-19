@@ -41,3 +41,4 @@ opensearchDashboards.branding:
     defaultUrl: "/files/images/GGS-logo.png"
     darkModeUrl: "/files/images/GGS-light.png"
   faviconUrl: "/files/images/GGS-logo.png"
+  applicationTitle: "GGS Cluster"
