@@ -34,8 +34,8 @@ This setup can be customized to use another domain. Just adjust the Nginx revers
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/geoloe/oscluster.git
-    cd oscluster
+    git clone https://github.com/geoloe/ggscluster.git
+    cd ggscluster-main
     ```
 
 2. Generate SSL certificates for OpenSearch, Nginx, OpenSearch Dashboards, and Apache:
@@ -83,28 +83,47 @@ This setup can be customized to use another domain. Just adjust the Nginx revers
 
 ## Usage
 
-Start the Cluster:
+1. Start the main applications:
 ```bash
 docker-compose -f docker-compose.yml up -d
 ```
 
-Start the Data Ingest Tool
-
+Start the Data Ingest Tool (optional)
 ```bash
 docker-compose -f docker-compose-logstash.yml up -d
 ```
 
+After build you might get an error that the port 53 is already in use.
+In that case disable systemd-resolved.service for pihole to run properly:
+
+```bash
+echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf
+sudo systemctl stop systemd-resolved
+sudo systemctl disable systemd-resolved
+```
+
+And then:
+
+```bash
+docker-compose -f docker-compose.yml restart
+```
+
+If you need the service again you can undo with:
+```bash
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+sudo systemctl enable systemd-resolved
+sudo systemctl start systemd-resolved
+```
+
+Before navigating to the sites. Import your previously created root-ca.pem to your broweser (might be needed)
+
 Access OpenSearch Dashboards:
 
-    Go to https://ggscluster.com/app/home#/.
+    Go to https://ggscluster.com.
 
 Pi-hole Admin Interface:
 
-    Access the Pi-hole GUI at https://ggscluster.com/pihole/admin.
-
-OpenSearch API:
-
-    Interact with the OpenSearch API at https://ggscluster.com:9200.
+    Access the Pi-hole GUI at https://ggscluster.com/admin.
 
 File Server:
 
@@ -134,4 +153,4 @@ when using both docker-compose.yml. Ignore it, as both docker-compose files use 
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE).
