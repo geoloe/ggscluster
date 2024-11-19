@@ -2,6 +2,19 @@ _meta:
   type: "roles"
   config_version: 2
 
+# Logstash role for ingesting data using the logstash user
+ls-role:
+  reserved: false
+  cluster_permissions:
+    - 'cluster_composite_ops'
+    - 'cluster_monitor'
+  index_permissions:
+    - index_patterns:
+        - '*'
+      allowed_actions:
+        - 'crud'
+        - 'create_index'
+  
 # Restrict users so they can only view visualization and dashboard on OpenSearchDashboards
 kibana_read_only:
   reserved: true

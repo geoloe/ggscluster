@@ -26,6 +26,12 @@ logstash:
   backend_roles:
   - "logstash"
 
+ls-role:
+  reserved: false
+  backend_roles:
+    - "logstash"
+  description: "Allow full access to all indices for logstash"
+
 kibana_user:
   reserved: false
   backend_roles:
