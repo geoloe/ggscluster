@@ -77,12 +77,11 @@ services:
       - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
       - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
       - ./certificates/root-ca.pem:/usr/share/opensearch-dashboards/config/root-ca.pem
-    #  - ./osd_plugins/ressourceManager-2.18.0.0.zip:/usr/share/opensearch-dashboards/config/ressourceManager-2.18.0.0.zip
-    #command: >
-    #  bash -c "
-    #  bin/opensearch-dashboards-plugin install file:///./usr/share/opensearch-dashboards/config/ressourceManager-2.18.0.0. &&
-    #  /usr/local/bin/docker-entrypoint
-    #  "
+    command: >
+      bash -c "
+      bin/opensearch-dashboards-plugin install https://github.com/geoloe/ressource_manager/raw/refs/heads/main/build/ressourceManager-2.18.0.0.zip &&
+      bin/opensearch-dashboards
+      "
 
   nginx:
     image: nginx:latest
