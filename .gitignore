@@ -6,3 +6,4 @@ logstash/data/
 files/creds
 files/certs
 files/uploads
+osd_plugins/
