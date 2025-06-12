@@ -41,9 +41,9 @@ canvas_report_data_analyzer:
     host: "smtp.gmail.com"                                                                                                                      # SMTP server host
     port: 587                                                                                                                                   # SMTP server port
     secure: false                                                                                                                               # Use secure connection (TLS/SSL) for SMTP
-    user: "georgsinventory@gmail.com"                                                                                                           # SMTP username for authentication
+    user: "user@gmail.com"                                                                                                           # SMTP username for authentication
     pass: "password"                                                                                                                    # SMTP password or app password for authentication
-    from: "georgsinventory@gmail.com"                                                                                                           # Email address to use as the sender
+    from: "user@gmail.com"                                                                                                           # Email address to use as the sender
     organization: "Your Organization, Inc"                                                                                                      # Organization name to display in emails/reports
   text_positions_and_sizes:
     tenant_name: 
