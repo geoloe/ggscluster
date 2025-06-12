@@ -29,6 +29,37 @@ opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
 opensearch_security.readonly_mode.roles: ["kibana_read_only"]
 opensearch_security.cookie.secure: true
 
+#<---------------- canvas_report_data_analyzer ---------------->#
+canvas_report_data_analyzer:
+  enabled: true                                                                                                                                 # Enable or disable the canvas_report_data_analyzer plugin
+  report_directory: "/usr/share/opensearch-dashboards/reports"                                                                                                              # Directory where generated reports will be saved
+  logo_path: "/usr/share/opensearch-dashboards/external_assets/opensearch_mark_on_light.png"    # Path to the logo image used in reports
+  report_template_path: "/usr/share/opensearch-dashboards/external_assets/report_template.pdf"  # Path to the PDF template for reports
+  allow_table_of_contents: true                                                                                                                # Whether to include a table of contents in the report
+  smtp:
+    url: "https://ggscluster.com"                                                                                                                # URL for the SMTP service (if required by your setup)
+    host: "smtp.gmail.com"                                                                                                                      # SMTP server host
+    port: 587                                                                                                                                   # SMTP server port
+    secure: false                                                                                                                               # Use secure connection (TLS/SSL) for SMTP
+    user: "user@gmail.com"                                                                                                           # SMTP username for authentication
+    pass: "password"                                                                                                                    # SMTP password or app password for authentication
+    from: "user@gmail.com"                                                                                                           # Email address to use as the sender
+    organization: "Your Organization, Inc"                                                                                                      # Organization name to display in emails/reports
+  text_positions_and_sizes:
+    tenant_name: 
+      x: 20                                                                                                                                     # X position for tenant name text in the report
+      y: 180                                                                                                                                    # Y position for tenant name text in the report
+      size: 56                                                                                                                                  # Font size for tenant name text
+    dashboard_name: 
+      x: 20                                                                                                                                     # X position for dashboard name text in the report
+      y: 120                                                                                                                                    # Y position for dashboard name text in the report
+      size: 20                                                                                                                                  # Font size for dashboard name text
+    timestamp:
+      x: 20                                                                                                                                     # X position for timestamp text in the report
+      y: 55                                                                                                                                     # Y position for timestamp text in the report
+      size: 18                                                                                                                                  # Font size for timestamp text
+#<---------------- canvas_report_data_analyzer ---------------->#
+
 # Branding Configuration
 opensearchDashboards.branding:
   logo:
