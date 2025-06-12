@@ -77,7 +77,7 @@ services:
       - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
       - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
       - ./certificates/root-ca.pem:/usr/share/opensearch-dashboards/config/root-ca.pem
-      - /home/geoloe/docker-reports:/usr/share/opensearch-dashboards/reports
+      - /your/local/user/docker-reports:/usr/share/opensearch-dashboards/reports
     command: >
       bash -c "
       if bin/opensearch-dashboards-plugin list | grep -q securityDashboards; then
