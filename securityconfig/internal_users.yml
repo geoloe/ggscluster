@@ -6,15 +6,19 @@ _meta:
   type: "internalusers"
   config_version: 2
 
+# Define the hashing algorithm (bcrypt)
+_hash: &hash
+  hash: "bcrypt"   # Explicitly declare bcrypt as the hashing method
+
 # Define your internal users here
 
 ## Demo users
 
 admin:
-  hash: "$2y$12$C.tzjlB7DAfb0uyUI1f6T.LGgMQJ667SgLhMWAWnY1wMe5EIAAN3K"  # bcrypt hash of the password
+  hash: "$2b$12$jMlU.cypR6vGBlB1zHFO3u7AQGuR2hyq6VaCLedNvW0jG6XwKpA8a"  # bcrypt hash of the password
   reserved: true
   backend_roles:
-    - "admin"  # Ensure the user has this role
+    - "admin"
   description: "Demo admin user"
 
 kibanaserver:
@@ -26,6 +30,5 @@ logstash:
   hash: "$2y$12$Pt9yrL29boFm6SyH632o4.o.r4nnIwIh4XcsCcq2CXgx./6YM.zl2"
   reserved: false
   backend_roles:
-  - "logstash"
+    - "logstash"
   description: "Demo logstash user, using external role mapping"
-

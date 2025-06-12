@@ -137,6 +137,79 @@ Nginx is configured to use TLSv1.2 and TLSv1.3 protocols with strong cipher suit
 
 OpenSearch Dashboards and API access are protected by HTTPS.
 
+To generate bcrypt passwords for the clusters internal users you can use:
+
+```
+python3 -c 'import bcrypt; print(bcrypt.hashpw(b"securePasswordTest123!", bcrypt.gensalt(rounds=12)).decode())'
+```
+
+`internal_users.yml`:
+
+```
+# Define the hashing algorithm (bcrypt)
+_hash: &hash
+  hash: "bcrypt"   # Explicitly declare bcrypt as the hashing method
+```
+
+To generate hashed passwords for mysql to login to your file server use the hash_creator.php and write your password to be hashed here:
+
+```
+<?php
+session_start();
+
+// Check if user is logged in and has the required role
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], [1, 2])) {
+    header('Location: unauthorized.php'); // Redirect to a custom page
+    exit();
+}
+
+// Define the plain text password
+$password = 'yourpassword123';
+
+// Hash the password
+$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+// Output the hashed password
+echo "Hashed Password: " . $hashedPassword;
+?>
+```
+
+Then navigate to https://ggscluster.com/files/hash_creator.php
+
+You will see your hashed password. This is only readable for logged in users with admin permissions
+
+## Opensearch Dashboards Plugins
+
+You can adapt the opensearch-dashboards container service to use:
+
+```
+    command: >
+      bash -c "
+      if bin/opensearch-dashboards-plugin list | grep -q securityDashboards; then
+        bin/opensearch-dashboards-plugin remove securityDashboards;
+      fi &&
+      bin/opensearch-dashboards-plugin install securityDashboards &&
+      if bin/opensearch-dashboards-plugin list | grep -q canvasReportDataAnalyzer; then
+        bin/opensearch-dashboards-plugin remove canvasReportDataAnalyzer;
+      fi &&
+      bin/opensearch-dashboards-plugin install https://github.com/geoloe/opensearch-dashboards-plugin-canvas-reports-data-analyzer/releases/download/3.0.0/canvasReportDataAnalyzer-3.0.0.zip &&
+      bin/opensearch-dashboards
+      "
+```
+
+Official plugins available can be fetched from: https://docs.opensearch.org/docs/latest/install-and-configure/install-dashboards/plugins/
+
+You can use my custom opensearch dashboards plugin to generate PDF reports and use a user friendly Query Workbench for more information see here:
+
+https://github.com/geoloe/opensearch-dashboards-plugin-canvas-reports-data-analyzer/tree/2.x
+
+Fore more plugins add:
+
+      if bin/opensearch-dashboards-plugin list | grep -q yourPlugin; then
+        bin/opensearch-dashboards-plugin remove yourPlugin;
+      fi &&
+      bin/opensearch-dashboards-plugin install yourPlugin &&
+
 ## Troubleshooting
 
 Bad Gateway in Nginx: Ensure the proxy_pass URL in nginx.conf correctly references the Docker service names (opensearch-node1 and opensearch-dashboards).

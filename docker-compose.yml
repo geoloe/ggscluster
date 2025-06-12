@@ -77,9 +77,17 @@ services:
       - ./certificates/opensearch-dashboards-key.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards-key.pem
       - ./certificates/opensearch-dashboards.pem:/usr/share/opensearch-dashboards/config/opensearch-dashboards.pem
       - ./certificates/root-ca.pem:/usr/share/opensearch-dashboards/config/root-ca.pem
+      - /home/geoloe/docker-reports:/usr/share/opensearch-dashboards/reports
     command: >
       bash -c "
-      bin/opensearch-dashboards-plugin install https://github.com/geoloe/ressource_manager/raw/refs/heads/main/build/ressourceManager-2.18.0.0.zip &&
+      if bin/opensearch-dashboards-plugin list | grep -q securityDashboards; then
+        bin/opensearch-dashboards-plugin remove securityDashboards;
+      fi &&
+      bin/opensearch-dashboards-plugin install securityDashboards &&
+      if bin/opensearch-dashboards-plugin list | grep -q canvasReportDataAnalyzer; then
+        bin/opensearch-dashboards-plugin remove canvasReportDataAnalyzer;
+      fi &&
+      bin/opensearch-dashboards-plugin install https://github.com/geoloe/opensearch-dashboards-plugin-canvas-reports-data-analyzer/releases/download/3.0.0/canvasReportDataAnalyzer-3.0.0.zip &&
       bin/opensearch-dashboards
       "
 

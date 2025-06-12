@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], [1, 2])) {
 }
 
 // Define the plain text password
-$password = 'secureViewerPassword123';
+$password = 'yourpassword123';
 
 // Hash the password
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
